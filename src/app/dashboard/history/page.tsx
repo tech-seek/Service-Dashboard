@@ -1,4 +1,3 @@
-import { auth } from '@/auth';
 import { ISerchParams } from '@/types';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
