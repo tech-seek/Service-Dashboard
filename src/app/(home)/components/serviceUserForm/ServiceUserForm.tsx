@@ -166,6 +166,7 @@ const ServiceUserForm: FC<IProps> = ({
                     ]}
                 />
             </div>
+            <DialogClose asChild>
                 <SubmitButton
                     type='button'
                     className='bg-white hover:bg-white text-black uppercase px-5 font-bold text-base md:text-lg w-full'
@@ -173,6 +174,7 @@ const ServiceUserForm: FC<IProps> = ({
                     onClick={handleSubmit}
                     isSubmitting={isSubmitting}
                 />
+            </DialogClose>
         </>
     );
 };
