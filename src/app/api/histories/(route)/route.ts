@@ -23,7 +23,6 @@ export const GET = async (req: NextRequest) => {
         const page = parseInt(searchParam.get('page') ?? '1', 10);
         const limit = parseInt(searchParam.get('limit') ?? '30', 10);
          const searchQuery = searchParam.get('search') ?? '';
-         console.log("🚀 > file: route.ts:26 > GET > searchQuery:", searchQuery)
         const res = await onFindHistories(page, limit, searchQuery);
         return res;
     } catch (err) {

@@ -146,7 +146,6 @@ const AddAccDataModalCon: FC<IProps> = ({ rowData, onSubmit, serviceId, dealers 
                     />
                 </div>
             </div>
-            {/* TODO : show submitting */}
             <div className='mt-5 flex justify-center gap-6'>
                 <Button
                     onClick={() => {

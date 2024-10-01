@@ -43,8 +43,6 @@ const ServiceUserForm: FC<IProps> = ({
 }) => {
     const { data: session } = useSession();
     const [formData, setFormData] = useState(initializeFormData(rowData, session));
-    console.log('🚀 > file: ServiceUserForm.tsx:45 > formData:', formData);
-
     const serviceAccOptions = useMemo(
         () =>
             servicesAccounts?.map(({ id, email }) => ({
@@ -168,8 +166,6 @@ const ServiceUserForm: FC<IProps> = ({
                     ]}
                 />
             </div>
-
-            <DialogClose className='w-full'>
                 <SubmitButton
                     type='button'
                     className='bg-white hover:bg-white text-black uppercase px-5 font-bold text-base md:text-lg w-full'
@@ -177,7 +173,6 @@ const ServiceUserForm: FC<IProps> = ({
                     onClick={handleSubmit}
                     isSubmitting={isSubmitting}
                 />
-            </DialogClose>
         </>
     );
 };
