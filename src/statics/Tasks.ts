@@ -1,0 +1,298 @@
+const Tasks = [
+    {
+        id: '5431152f-e594-4be2-bdb0-6000c7ae7f9b',
+        serviceName: 'spotify',
+        task: 'subscription',
+        phoneNumber: '528-435-7342',
+        expiry: '2024-06-03T21:29:52Z',
+        status: 'completed',
+        description:
+            'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.',
+    },
+    {
+        id: '55f8a797-7bee-4117-ae0b-ef7eaf881070',
+        serviceName: 'spotify',
+        task: 'subscription',
+        phoneNumber: '926-185-5375',
+        expiry: '2022-06-07T21:25:52Z',
+        status: 'pending',
+        description:
+            'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.',
+    },
+    {
+        id: 'ab2f8b67-4437-4697-ac31-4378ffbf4d55',
+        serviceName: 'disney',
+        task: 'payment',
+        phoneNumber: '642-965-3448',
+        expiry: '2023-03-13T13:17:20Z',
+        status: 'pending',
+        description: 'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.',
+    },
+    {
+        id: '20d0cbba-3fe4-4659-960b-00d5c35a26ab',
+        serviceName: 'spotify',
+        task: 'payment',
+        phoneNumber: '487-411-3129',
+        expiry: '2021-09-20T23:10:23Z',
+        status: 'completed',
+        description: 'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.',
+    },
+    {
+        id: 'e38c0d6f-2874-4a9e-a4f0-995fa02e4e2a',
+        serviceName: 'spotify',
+        task: 'subscription',
+        phoneNumber: '448-601-0196',
+        expiry: '2023-09-19T07:03:57Z',
+        status: 'completed',
+        description:
+            'Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero.',
+    },
+    {
+        id: 'e3239cc2-862a-46b6-acfd-80bb5acb0ae2',
+        serviceName: 'hulu',
+        task: 'payment',
+        phoneNumber: '265-142-5827',
+        expiry: '2023-11-06T00:41:08Z',
+        status: 'completed',
+        description:
+            'Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh.',
+    },
+    {
+        id: '77343bbf-814b-4138-8896-a32c15bdf757',
+        serviceName: 'hulu',
+        task: 'payment',
+        phoneNumber: '207-562-1343',
+        expiry: '2022-01-25T06:22:18Z',
+        status: 'completed',
+        description:
+            'Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.',
+    },
+    {
+        id: '50222263-9589-4639-aa09-f628bf6cf938',
+        serviceName: 'prime',
+        task: 'subscription',
+        phoneNumber: '689-987-0548',
+        expiry: '2023-03-10T07:10:35Z',
+        status: 'pending',
+        description:
+            'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.',
+    },
+    {
+        id: '4384ff4e-78b0-444b-aefc-e7aca0f0cc65',
+        serviceName: 'disney',
+        task: 'payment',
+        phoneNumber: '665-956-7891',
+        expiry: '2024-09-08T22:06:44Z',
+        status: 'pending',
+        description:
+            'Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam. Suspendisse potenti.',
+    },
+    {
+        id: '802db1d6-6b99-485d-a99a-5079f6b0d120',
+        serviceName: 'netflix',
+        task: 'renewal',
+        phoneNumber: '518-413-7890',
+        expiry: '2023-08-16T20:15:46Z',
+        status: 'pending',
+        description:
+            'Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.',
+    },
+    {
+        id: 'af5dc7b3-5c47-4f98-a98d-86c5ff77fa01',
+        serviceName: 'netflix',
+        task: 'payment',
+        phoneNumber: '850-950-8553',
+        expiry: '2023-03-27T23:26:09Z',
+        status: 'completed',
+        description: 'In congue. Etiam justo. Etiam pretium iaculis justo.',
+    },
+    {
+        id: 'cf9584bf-047d-4133-8563-d84ddb2a4cdb',
+        serviceName: 'netflix',
+        task: 'subscription',
+        phoneNumber: '790-763-6532',
+        expiry: '2024-01-09T07:30:12Z',
+        status: 'completed',
+        description:
+            'Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.',
+    },
+    {
+        id: '3d4e230d-cbfc-42a8-b17a-30a640023fef',
+        serviceName: 'spotify',
+        task: 'renewal',
+        phoneNumber: '246-938-2921',
+        expiry: '2022-08-26T16:50:00Z',
+        status: 'completed',
+        description:
+            'Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.',
+    },
+    {
+        id: '1f878067-ea11-4891-930c-91bd92cb1218',
+        serviceName: 'hulu',
+        task: 'subscription',
+        phoneNumber: '557-318-5594',
+        expiry: '2024-04-29T21:17:56Z',
+        status: 'completed',
+        description:
+            'Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.',
+    },
+    {
+        id: '706fa97c-e4f0-41e9-b3c9-4bbe88609746',
+        serviceName: 'spotify',
+        task: 'payment',
+        phoneNumber: '878-400-6322',
+        expiry: '2023-09-20T10:51:36Z',
+        status: 'pending',
+        description:
+            'Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.',
+    },
+    {
+        id: 'e3841672-37f4-49b8-aee4-fcd8535a087c',
+        serviceName: 'spotify',
+        task: 'subscription',
+        phoneNumber: '532-129-2840',
+        expiry: '2024-02-19T12:20:02Z',
+        status: 'completed',
+        description:
+            'Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl. Nunc rhoncus dui vel sem.',
+    },
+    {
+        id: '8ea4c0cf-9901-440e-9058-92ffe8b48760',
+        serviceName: 'netflix',
+        task: 'subscription',
+        phoneNumber: '925-344-0970',
+        expiry: '2022-09-14T12:25:43Z',
+        status: 'pending',
+        description:
+            'Vestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.',
+    },
+    {
+        id: '760e87db-beaf-4d4f-accb-8a64dd606dbd',
+        serviceName: 'hulu',
+        task: 'subscription',
+        phoneNumber: '952-290-5089',
+        expiry: '2024-08-26T22:18:09Z',
+        status: 'completed',
+        description:
+            'Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.',
+    },
+    {
+        id: 'b5a00a40-beba-4782-b329-c3abe6a6c8db',
+        serviceName: 'prime',
+        task: 'subscription',
+        phoneNumber: '523-440-5681',
+        expiry: '2021-12-07T12:33:32Z',
+        status: 'completed',
+        description:
+            'Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.',
+    },
+    {
+        id: '37830262-6251-4de8-a4ca-bf7c92144c42',
+        serviceName: 'hulu',
+        task: 'subscription',
+        phoneNumber: '451-466-6575',
+        expiry: '2023-01-05T04:18:12Z',
+        status: 'completed',
+        description:
+            'In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.',
+    },
+    {
+        id: '80e1b122-38ee-48b6-9d2a-dd94d558dcf6',
+        serviceName: 'hulu',
+        task: 'subscription',
+        phoneNumber: '268-293-2173',
+        expiry: '2024-09-22T04:13:00Z',
+        status: 'pending',
+        description:
+            'Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.',
+    },
+    {
+        id: '046bb168-b7cb-40b2-be05-bda89e3765d0',
+        serviceName: 'netflix',
+        task: 'subscription',
+        phoneNumber: '250-441-0520',
+        expiry: '2024-06-05T02:47:47Z',
+        status: 'pending',
+        description: 'Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.',
+    },
+    {
+        id: 'ff96521a-021d-4c88-b9df-1b2ef4ad5d59',
+        serviceName: 'netflix',
+        task: 'payment',
+        phoneNumber: '724-702-6772',
+        expiry: '2023-05-25T06:49:03Z',
+        status: 'pending',
+        description:
+            'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.',
+    },
+    {
+        id: '2896a89e-7bcd-4b04-b0f0-1be37d7a7208',
+        serviceName: 'prime',
+        task: 'subscription',
+        phoneNumber: '205-937-2757',
+        expiry: '2023-12-17T03:35:28Z',
+        status: 'pending',
+        description:
+            'Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.',
+    },
+    {
+        id: '0983d863-b6c9-4bdd-94ae-721b143243cf',
+        serviceName: 'netflix',
+        task: 'subscription',
+        phoneNumber: '447-169-0165',
+        expiry: '2024-08-11T07:49:34Z',
+        status: 'completed',
+        description:
+            'Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.',
+    },
+    {
+        id: '55c1fd61-ebee-4296-80b6-61bfe2b470a0',
+        serviceName: 'prime',
+        task: 'payment',
+        phoneNumber: '135-511-1859',
+        expiry: '2023-09-24T02:02:09Z',
+        status: 'pending',
+        description:
+            'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.',
+    },
+    {
+        id: '76f6aec0-bd72-47d6-85e5-b2d9f7da4763',
+        serviceName: 'spotify',
+        task: 'renewal',
+        phoneNumber: '560-497-6306',
+        expiry: '2023-02-17T22:16:52Z',
+        status: 'completed',
+        description: 'Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.',
+    },
+    {
+        id: 'adc40f36-7248-4fc4-bf27-c0c722180101',
+        serviceName: 'netflix',
+        task: 'subscription',
+        phoneNumber: '180-808-1565',
+        expiry: '2023-05-20T06:28:57Z',
+        status: 'pending',
+        description:
+            'Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.',
+    },
+    {
+        id: '4c412231-45bb-44ec-9045-d56c62672ce7',
+        serviceName: 'hulu',
+        task: 'subscription',
+        phoneNumber: '610-831-1684',
+        expiry: '2023-06-04T05:15:20Z',
+        status: 'pending',
+        description:
+            'Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.',
+    },
+    {
+        id: 'd945db48-c869-42d3-837f-6c81015f30fb',
+        serviceName: 'spotify',
+        task: 'renewal',
+        phoneNumber: '195-657-4668',
+        expiry: '2023-01-23T17:07:40Z',
+        status: 'completed',
+        description: 'In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus.',
+    },
+];
+
+export default Tasks;

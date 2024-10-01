@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  admin
+  moderator
+}
+
+enum TaskStatus {
+  pending
+  solved
+}
+
+model User {
+  id       String @id @default(uuid())
+  userName String @unique
+  password String
+  role     Role
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime?
+  ServiceUsers ServiceUser[]
+  History      History[]
+
+  @@index([id, userName])
+  @@map("users")
+}
+
+model Service {
+  id             String           @id @default(uuid())
+  name           String           @unique
+  serviceAccount ServiceAccount[]
+  ServiceUsers   ServiceUser[]
+  History        History[]
+  Task           Task[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime?
+
+  @@index([id])
+  @@map("services")
+}
+
+model ServiceAccount {
+  id          String        @id @default(uuid())
+  password    String
+  email       String        @unique
+  joinDate    DateTime
+  endDate     DateTime
+  leftDays    Int?
+  status      String
+  serviceId   String
+  service     Service       @relation(fields: [serviceId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  dealerId    String
+  dealer      Dealer        @relation(fields: [dealerId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  serviceUser ServiceUser[]
+  Task        Task[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  @@index([id, email])
+  @@map("service_accounts")
+}
+
+model Dealer {
+  id             String           @id @default(uuid())
+  name           String           @unique
+  serviceAccount ServiceAccount[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  @@index([id])
+  @@map("dealers")
+}
+
+model ServiceUser {
+  id               String         @id @default(uuid())
+  name             String
+  email            String?
+  phone            String
+  joinDate         DateTime
+  endDate          DateTime
+  leftDays         Int?
+  status           String
+  serviceAccountId String
+  model            String?
+  type             String
+  serviceAccount   ServiceAccount @relation(fields: [serviceAccountId], references: [id])
+  serviceId        String
+  service          Service        @relation(fields: [serviceId], references: [id])
+  providerName     String
+  provider         User           @relation(fields: [providerName], references: [userName])
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime?
+
+  @@index([id, serviceAccountId])
+  @@map("service_users")
+}
+
+model Task {
+  id               String         @id @default(uuid())
+  number           String
+  serviceId        String
+  service          Service        @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  serviceAccountId String
+  serviceAccount   ServiceAccount @relation(fields: [serviceAccountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  description      String
+  status           TaskStatus
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime?
+
+  @@index([id])
+  @@map("tasks")
+}
+
+model History {
+  id         String  @id @default(uuid())
+  name       String
+  phone      String
+  serviceId  String
+  services   Service @relation(fields: [serviceId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  providerId String
+  providers  User    @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  lastExpire String
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime?
+  @@index([id, serviceId, providerId])
+  @@map("histories")
+}

@@ -1,0 +1,12 @@
+{
+    "crons": [
+        {
+            "path": "/api/service-users?is-update-left-days=true",
+            "schedule": "0 0 * * *"
+        },
+        {
+            "path": "/api/service-accounts?is-update-left-days=true",
+            "schedule": "0 0 * * *"
+        }
+    ]
+}
