@@ -14,16 +14,17 @@ import {
     AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { CustomAlertDialog } from '@/components/ui/customAlertDialog';
 import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { SelelectAndSearch } from '@/components/ui/selectAndSerch';
+import { TableRowSkeleton } from '@/components/ui/table-skeleton';
 import { Textarea } from '@/components/ui/textarea';
 import { createTasksAction, deleteTaskAction, updateTaskAction } from '@/app/actions/tasks';
 import useShowToast from '@/app/hooks/useShowToast';
 import { TaskHandlerTooltip } from '../taskHandlerTooltip';
-import { TableRowSkeleton } from '@/components/ui/table-skeleton';
 
 const AddTaskModalCon = () => {
     const { data: services, isLoading: isServicesLoading } = useFetchData(
@@ -154,16 +155,16 @@ const AddTaskModalCon = () => {
     const handleSolved = async (taskId: string) => {
         const taskToToggle = tasksData.find((task) => task.id === taskId);
 
-    if (!taskToToggle) {
-        console.log('Task not found');
-        return;
-    }
+        if (!taskToToggle) {
+            console.log('Task not found');
+            return;
+        }
 
         // Ensure the required fields are not undefined
         const number = taskToToggle.number ?? '';
-    const serviceId = taskToToggle.service?.id ?? '';
-    const serviceAccountId = taskToToggle.serviceAccount?.id ?? '';
-    const description = taskToToggle.description ?? '';
+        const serviceId = taskToToggle.service?.id ?? '';
+        const serviceAccountId = taskToToggle.serviceAccount?.id ?? '';
+        const description = taskToToggle.description ?? '';
 
         const newStatus = taskToToggle.status === 'solved' ? 'pending' : 'solved';
 
@@ -215,7 +216,7 @@ const AddTaskModalCon = () => {
                         type='number'
                         onChange={(e) => setPhNumber(e.target.value)}
                         id='phNumber'
-                        className='col-span-3 dark:bg-slate-900 text-lg'
+                        className='col-span-3 dark:bg-slate-900 text-lg py-1'
                     />
                 </div>
                 <div className='grid md:flex flex-col grid-cols-4 items-center md:items-start gap-3'>
@@ -341,7 +342,19 @@ const AddTaskModalCon = () => {
                 </div>
 
                 <div className='h-48 md:h-56 mt-3 md:mt-4 overflow-y-auto'>
-                    {!isTasksLoading ? (
+                    {currentTasks.length === 0 ? (
+                        <Card className='h-full'>
+                            <CardContent className=' grid place-items-center dark:bg-slate-900 h-full'>
+                                <span className='capitalize text-2xl font-semibold'>
+                                    there is No Task {activeTab}
+                                </span>
+                            </CardContent>
+                        </Card>
+                    ) : isTasksLoading ? (
+                        Array.from({ length: 3 }, (_, i) => (
+                            <TableRowSkeleton key={i} TrClasses='mb-1.5' />
+                        ))
+                    ) : (
                         currentTasks?.map(
                             (
                                 { id, service, serviceAccount, number, description, createdAt },
@@ -406,10 +419,6 @@ const AddTaskModalCon = () => {
                                 </Accordion>
                             ),
                         )
-                    ) : (
-                        Array.from({ length: 3 }, (_, i) => (
-                            <TableRowSkeleton key={i} TrClasses='mb-1.5' />
-                        ))
                     )}
                 </div>
             </div>

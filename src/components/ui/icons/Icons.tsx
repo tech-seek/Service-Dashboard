@@ -50,7 +50,7 @@ const Icons = {
             />
         </svg>
     ),
-    badgeMinus: (props: LucideProps) => (
+    BadgeMinus: (props: LucideProps) => (
         <svg
             {...props}
             xmlns='http://www.w3.org/2000/svg'

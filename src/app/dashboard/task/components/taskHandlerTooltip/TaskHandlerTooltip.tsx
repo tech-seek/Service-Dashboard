@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Icons } from '@/components/ui/icons';
 import { CustomAlertDialog } from '@/components/ui/customAlertDialog';
+import { TOOL_TIP_DELAY } from '@/statics';
 
 interface IProps {
   clickEdit: () => void;
@@ -45,39 +46,39 @@ const TaskHandlerTooltip: FC<IProps> = ({ clickEdit, handleSolved, handleDeleteT
   }, [tooltipRef]);
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={TOOL_TIP_DELAY}>
       <div className="relative inline-block md:hidden" ref={tooltipRef}>
         <Tooltip open={isOpen}>
           <TooltipTrigger asChild>
-            <span onClick={handleToggle}>
-              <Icons.badgeMinus />
-            </span>
+            <button onClick={handleToggle}>
+              <Icons.BadgeMinus />
+            </button>
           </TooltipTrigger>
           {isOpen && (
             <TooltipContent className="flex gap-2 p-1.5">
               {activeTab === 'pending' ? (
-                <span
+                <button
                   onClick={() => {
                     handleSolved();
                   }}
                   className='hover:scale-110 px-1.5 py-1'
                 >
                   <Icons.SquareCheckBig />
-                </span>
+                </button>
               )
                 :
                 (
-                  <span
+                  <button
                     onClick={() => {
                       handleSolved();
                     }}
                     className='hover:scale-110 px-1.5 py-1'
                   >
                     <Icons.Undo2 />
-                  </span>
+                  </button>
                 )
               }
-              <span
+              <button
                 onClick={() => {
                   clickEdit();
                   handleClose();
@@ -85,7 +86,7 @@ const TaskHandlerTooltip: FC<IProps> = ({ clickEdit, handleSolved, handleDeleteT
                 className='hover:scale-110 px-1.5 py-1'
               >
                 <Icons.Pencil />
-              </span>
+              </button>
               <CustomAlertDialog
                 buttonTitle={<Icons.Trash2 />}
                 className='hover:scale-110 px-1.5 py-1 bg-transparent shadow-none hover:bg-transparent hover:shadow-none'
@@ -102,33 +103,33 @@ const TaskHandlerTooltip: FC<IProps> = ({ clickEdit, handleSolved, handleDeleteT
         <Tooltip>
           <TooltipTrigger asChild>
             <span>
-              <Icons.badgeMinus />
+              <Icons.BadgeMinus />
             </span>
           </TooltipTrigger>
           <TooltipContent className="flex items-center gap-2 p-1.5">
             {activeTab === 'pending' ? (
-              <span
+              <button
                 onClick={() => {
                   handleSolved();
                 }}
                 className='hover:scale-110 px-1.5 py-1'
               >
                 <Icons.SquareCheckBig />
-              </span>
+              </button>
             )
               :
               (
-                <span
+                <button
                   onClick={() => {
                     handleSolved();
                   }}
                   className='hover:scale-110 px-1.5 py-1'
                 >
                   <Icons.Undo2 />
-                </span>
+                </button>
               )
             }
-            <span
+            <button
               onClick={() => {
                 clickEdit();
                 handleClose();
@@ -136,8 +137,8 @@ const TaskHandlerTooltip: FC<IProps> = ({ clickEdit, handleSolved, handleDeleteT
               className='hover:scale-110 px-1.5 py-1'
             >
               <Icons.Pencil />
-            </span>
-            <span
+            </button>
+            <button
               onClick={() => {
                 // handleDeleteTask();
                 setIsConfirmationOpen(true);
@@ -145,7 +146,7 @@ const TaskHandlerTooltip: FC<IProps> = ({ clickEdit, handleSolved, handleDeleteT
               className='hover:scale-110 px-1.5 py-1'
             >
               <Icons.Trash2 />
-            </span>
+            </button>
           </TooltipContent>
         </Tooltip>
       </div>

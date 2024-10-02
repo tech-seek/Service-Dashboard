@@ -22,10 +22,12 @@ import { onLogoutAction } from '@/app/actions/login';
 import { AddServiceBtn } from '@/app/dashboard/components/services';
 import useShowToast from '@/app/hooks/useShowToast';
 import ProfileSettings from '../sidebar/ProfileSettings';
+import { useSession } from 'next-auth/react';
 
 const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
     const [isOpen, setIsOpen] = useState(false);
     const pathName = usePathname();
+    const session = useSession();
     const { showToast } = useShowToast();
     const isHomePage = pathName === '/dashboard';
     const hanldeLogout = async () => {
@@ -54,6 +56,7 @@ const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end' className='*:cursor-pointer'>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Name: {session?.data?.user?.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                         <Link href={'/dashboard/add-moderator'}>Add Moderator</Link>

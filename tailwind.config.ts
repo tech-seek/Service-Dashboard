@@ -17,6 +17,7 @@ const config: Config = {
                 },
             },
             screens: {
+                xxs: '360px',
                 xs: '480px',
                 sm: '640px',
                 md: '768px',
@@ -65,7 +66,7 @@ const config: Config = {
                     '4': 'hsl(var(--chart-4))',
                     '5': 'hsl(var(--chart-5))',
                 },
-                cream: '#F2E49A'
+                cream: '#F2E49A',
             },
             borderRadius: {
                 lg: 'var(--radius)',
