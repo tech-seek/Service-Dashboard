@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
@@ -13,15 +14,20 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { updateLeftDaysCalculationSeviceAccunts, updateLeftDaysCalculationSeviceUsers } from '@/app/actions';
+import {
+    updateLeftDaysCalculationSeviceAccunts,
+    updateLeftDaysCalculationSeviceUsers,
+} from '@/app/actions';
 import { onLogoutAction } from '@/app/actions/login';
 import { AddServiceBtn } from '@/app/dashboard/components/services';
 import useShowToast from '@/app/hooks/useShowToast';
-import Link from 'next/link';
+import ProfileSettings from '../sidebar/ProfileSettings';
+import { useSession } from 'next-auth/react';
 
-const AvatarDropDown = () => {
+const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
     const [isOpen, setIsOpen] = useState(false);
     const pathName = usePathname();
+    const session = useSession();
     const { showToast } = useShowToast();
     const isHomePage = pathName === '/dashboard';
     const hanldeLogout = async () => {
@@ -50,8 +56,11 @@ const AvatarDropDown = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end' className='*:cursor-pointer'>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Name: {session?.data?.user?.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild><Link href={'/dashboard/add-moderator'}>Add Moderator</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href={'/dashboard/add-moderator'}>Add Moderator</Link>
+                    </DropdownMenuItem>
                     {isHomePage && (
                         <DropdownMenuItem onClick={() => setIsOpen(true)}>
                             Add Section
@@ -60,6 +69,11 @@ const AvatarDropDown = () => {
                     <DropdownMenuItem onClick={handleUpdateLeftDays}>
                         Update Left Days
                     </DropdownMenuItem>
+                    {isAdmin && (
+                        <DropdownMenuItem asChild>
+                            <ProfileSettings />
+                        </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={hanldeLogout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>

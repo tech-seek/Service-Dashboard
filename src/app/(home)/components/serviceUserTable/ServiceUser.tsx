@@ -45,6 +45,7 @@ const ServiceUser = ({
         queryClient.invalidateQueries({ queryKey: ['serviceUsers'] });
         setIsOpen(false);
     };
+    
     const {
         endSelectedDate,
         filterServiceUsers,

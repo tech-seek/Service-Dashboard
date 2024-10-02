@@ -14,9 +14,7 @@ interface IProps {
   rowData?: UsersData;
 }
 
-const EditUserModalCon: FC<IProps> = ({ onSubmit, rowData }) => {
-  console.log(rowData);
-  
+const EditUserModalCon: FC<IProps> = ({ onSubmit, rowData }) => {  
   const [name, setName] = useState<string>(rowData?.name ?? "");
   const [phone, setPhone] = useState<string>(rowData?.phone ?? "");
   const [joinDate, setJoinDate] = useState<Date | undefined>(rowData?.joinDate ? new Date(rowData.joinDate) : undefined);

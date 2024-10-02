@@ -13,7 +13,7 @@ interface IProps {
     isAdmin?: boolean;
 }
 
-const Sidebar: FC<IProps> = ({ children,isAdmin }) => {
+const Sidebar: FC<IProps> = ({ children, isAdmin }) => {
     const pathname = usePathname();
     return (
         <div className='flex min-h-dvh w-full flex-col bg-muted/40 sm:pl-16'>
@@ -29,9 +29,9 @@ const Sidebar: FC<IProps> = ({ children,isAdmin }) => {
                     <GlobalSearch />
                     <ThemeSwitcher />
                     {/* avatar DropdownMenu */}
-                    <AvatarDropDown />
+                    <AvatarDropDown isAdmin={isAdmin} />
                 </header>
-            </div>  
+            </div>
             {children}
         </div>
     );
