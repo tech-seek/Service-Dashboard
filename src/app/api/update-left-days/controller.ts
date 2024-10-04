@@ -21,7 +21,7 @@ export const updateLeftDays = async () => {
             const updatePromises = batch.map(async (record) => {
                 const endDate = record?.endDate.toISOString() ?? '';
                 const leftDays = calculateLeftDays(endDate);
-                if (leftDays > 0) {
+                if (leftDays >= 0) {
                     try {
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         await (db[isAccount ? 'serviceAccount' : 'serviceUser'] as any).update({
