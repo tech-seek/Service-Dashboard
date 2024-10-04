@@ -7,8 +7,8 @@ export const EXPIRING = 'expiring';
 export const NAV_LINKS = [
     { href: '/', icon: Icons.House, label: 'Home' },
     { href: '/dashboard', icon: Icons.LayoutDashboard, label: 'Dashboard' },
-    { href: '/dashboard/task', icon: Icons.ClipboardList, label: 'Tasks' },
     { href: '/dashboard/expireing', icon: Icons.CalendarX2, label: 'Expireing' },
+    { href: '/dashboard/task', icon: Icons.ClipboardList, label: 'Tasks' },
     { href: '/dashboard/history', icon: Icons.History, label: 'History' },
     // { href: '#', icon: Icons.Settings, label: 'Settings' },
 ];
