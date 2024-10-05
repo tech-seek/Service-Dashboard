@@ -61,9 +61,10 @@ const CustomTable: FC<IProps> = ({
     totalPage,
 }) => {
     const [sorting, setSorting] = useState<SortingState>([]);
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10); // Default limit per page
     const pathName = usePathname();
+    const isMultiTableAtSamePage = pathName === '/' || pathName === '/dashboard';
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(isMultiTableAtSamePage ? 5 : 10); // Default limit per page
     const router = useRouter();
     const totalPages =
         typeof totalPage === 'number'
@@ -113,9 +114,15 @@ const CustomTable: FC<IProps> = ({
             )}
 
             <div
-                className={cn('h-56 overflow-y-auto bg-secondary', {
-                    'h-[58dvh]': fullHight.includes(pathName),
-                })}
+                className={cn(
+                    'h-56 overflow-y-auto bg-secondary',
+                    {
+                        'h-[58dvh]': fullHight.includes(pathName),
+                    },
+                    {
+                        'h-full min-h-[58dvh]': limit >= 50,
+                    },
+                )}
             >
                 <Table className='overflow-visible'>
                     <TableHeader className='text-white'>
@@ -135,9 +142,9 @@ const CustomTable: FC<IProps> = ({
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext(),
-                                            )}
+                                                  header.column.columnDef.header,
+                                                  header.getContext(),
+                                              )}
                                     </TableHead>
                                 ))}
                             </TableRow>

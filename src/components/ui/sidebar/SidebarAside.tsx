@@ -29,15 +29,7 @@ const SidebarAside: FC<IProps> = ({ pathName, isAdmin }) => {
                                             isHideHistoryBtn ? 'hidden' : '',
                                         )}
                                     >
-                                        <Icon
-                                            className={cn(
-                                                'h-6 w-6',
-                                                href === '/dashboard/expireing' ? 'text-red-300' : null,
-                                                pathName === href && href === '/dashboard/expireing'
-                                                    ? 'text-red-500'
-                                                    : null,
-                                            )}
-                                        />
+                                        <Icon className='h-6 w-6' />
                                         <span className='sr-only'>{label}</span>
                                     </Link>
                                 </TooltipTrigger>

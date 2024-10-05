@@ -1,7 +1,8 @@
-import { FormFieldConfig } from '@/components/ui/customForm/customForm';
 import { z } from 'zod';
+import { FormFieldConfig } from '@/components/ui/customForm/customForm';
 
-export const ADD_SELLER_FORM_FIELDS: FormFieldConfig[] = [
+
+export const ADD_MODERETOR_FORM_FIELDS: FormFieldConfig[] = [
     {
         name: 'name',
         fieldType: 'input',
@@ -19,4 +20,3 @@ export const ADD_SELLER_FORM_FIELDS: FormFieldConfig[] = [
         className: 'rounded-sm py-2.5',
     },
 ];
-

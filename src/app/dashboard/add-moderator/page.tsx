@@ -1,8 +1,7 @@
-
+import { getUsers } from '@/http';
 import { Metadata } from 'next';
 import React from 'react';
-import AddSellerContainer from './AddModeretorContainer';
-import { getUsers } from '@/http';
+import AddModeretorWrapper from './AddModeretorWrapper';
 
 export const metadata: Metadata = {
     title: 'Add Moderator',
@@ -13,6 +12,6 @@ const AddSellerPage = async () => {
         // Handle the case where res is null or undefined
         return <div>Error: Unable to fetch sellers</div>;
     }
-    return <AddSellerContainer data={res.data} />;
+    return <AddModeretorWrapper data={res.data} />;
 };
 export default AddSellerPage;
