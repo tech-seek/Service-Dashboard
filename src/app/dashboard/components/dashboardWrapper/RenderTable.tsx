@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import React, { FC } from 'react';
 import { TDealerResponse } from '@/types/dealer';
 import { TServiceResponse } from '@/types/service';
@@ -80,17 +81,24 @@ const RenderTable: FC<IProps> = ({
               showServiceName: true,
           })
         : [];
-
+    const pathName = usePathname();
+    const isExpiringPage = pathName === '/dashboard/expireing';
     return (
         <CustomTable
             columns={columns as TServiceAccountResponse[]}
             filteredData={mergedData}
             key={firstItem?.id}
             serviceId={firstItem?.id}
-            serviceName={firstItem?.name}
+            serviceName={isExpiringPage ? 'Expiring' : firstItem?.name}
             isLoading={isLoading || isPending}
             totalPage={totalPage}
             queryPath={queryPath}
+            BGColor={isExpiringPage ? 'bg-red-300 dark:bg-red-400' : ''}
+            headerClasses={
+                isExpiringPage
+                    ? 'bg-red-600 hover:bg-red-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white'
+                    : ''
+            }
         />
     );
 };

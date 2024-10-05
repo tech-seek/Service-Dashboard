@@ -54,7 +54,7 @@ const ServiceAccountsExpireTable = ({ searchParams }: ISerchParams) => {
                     handleDealerChange={handleDealerChange}
                     handleDateChange={handleDateChange}
                     dealers={dealers}
-                    queryPath={EXPIRING}
+                    queryPath={EXPIRING}        
                     totalPage={totalPage ?? {}}
                 />
             </div>
