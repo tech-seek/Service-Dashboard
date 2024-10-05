@@ -5,12 +5,12 @@ import { useCallback, useMemo, useState } from 'react';
 import { useFetchData } from '@/lib/useFetchData';
 import { useFilteredServiceAccounts } from './useFilteredServiceAccounts';
 
-
 export const useServiceTableDependencies = (
     query: string,
     page: number,
     limit: number,
     searchQuery: string,
+    expiring: string,
 ) => {
     // Initialize state to store the selected dealer for each service
     const [selectedDealer, setSelectedDealer] = useState<{ [serviceId: string]: string | null }>(
@@ -41,7 +41,7 @@ export const useServiceTableDependencies = (
         isPending,
         isLoading,
     } = useFetchData(
-        ['serviceAccounts', page.toString(), limit.toString(), searchQuery],
+        ['serviceAccounts', page.toString(), limit.toString(), searchQuery, expiring],
         fetchQueryServicesAcc,
     );
     // Handle date change

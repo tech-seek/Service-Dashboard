@@ -20,14 +20,7 @@ export const onCreateServiceAccount = async (payload: TServiceAccountPayload) =>
         //check if service  exist
         const serviceId = await db.service.findUnique({ where: { id: payload.serviceId } });
         if (!serviceId) return errorResponse('Service not found', 404);
-        // Check if dealerId is already used
-        const existingAccount = await db.serviceAccount.findFirst({
-            where: { AND: { dealerId: payload.dealerId, serviceId: payload.serviceId } },
-        });
 
-        if (existingAccount) {
-            return errorResponse('Dealer ID already exists', 400);
-        }
         //check if dealer exist
         const dealerId = await db.dealer.findUnique({
             where: { id: payload.dealerId },

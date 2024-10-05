@@ -2,11 +2,12 @@
 
 import { useSearchQuery } from '@/provider/use-search-provider';
 import { EXPIRING } from '@/statics';
+import { ISerchParams } from '@/types';
 import React from 'react';
 import TableSkeleton from '@/components/ui/table-skeleton';
 import RenderTable from '@/app/dashboard/components/dashboardWrapper/RenderTable';
 import { useServiceTableDependencies } from '@/app/dashboard/hooks';
-import { ISerchParams } from '@/types';
+
 
 const ServiceAccountsExpireTable = ({ searchParams }: ISerchParams) => {
     const page = parseInt(searchParams['page'] ?? '1', 10);
@@ -29,6 +30,7 @@ const ServiceAccountsExpireTable = ({ searchParams }: ISerchParams) => {
         page,
         limit,
         searchQuery,
+        EXPIRING,
     );
 
     if (!services || services.length === 0) {
