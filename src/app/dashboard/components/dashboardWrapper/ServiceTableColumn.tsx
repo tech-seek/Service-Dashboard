@@ -14,13 +14,10 @@ import { Button } from '@/components/ui/button';
 import { CustomDialogModal } from '@/components/ui/customDialogModal';
 import { DatePicker } from '@/components/ui/datePicker';
 import { SelelectAndSearch } from '@/components/ui/selectAndSerch';
-import {
-    createServiceAccuntAction,
-    deleteServiceAccuntAction,
-    updateServiceAccuntAction,
-} from '@/app/actions/serviceAccount';
+import { createServiceAccuntAction, deleteServiceAccuntAction, updateServiceAccuntAction } from '@/app/actions/serviceAccount';
 import useShowToast from '@/app/hooks/useShowToast';
 import { AddAccDataModalCon, EditAccDataModalCon } from '..';
+
 
 interface IProps {
     data: TServiceResponse;
@@ -68,13 +65,14 @@ const ServiceTableColumn = ({
         async (newUserData: TServiceAccountPayload) => {
             // Call the createServiceAccuntAction function to add the
             // new account.
+            const prevServiceAcc = queryClient.getQueryData(['serviceAccounts']);
             const { data, error } = await createServiceAccuntAction(newUserData);
 
             // If there is an error, show an error toast message.
-            if (error) return showToast(false, error);
-
-            // If the account is added successfully, show a success
-            // toast message and invalidate the cache.
+            if (error) {
+                queryClient.setQueryData(['serviceAccounts'], prevServiceAcc);
+                return showToast(false, error);
+            }
             const message = (data as { message: string }).message;
             showToast(true, message);
             queryClient.invalidateQueries({ queryKey: ['serviceAccounts'] });
@@ -93,10 +91,15 @@ const ServiceTableColumn = ({
         async (accountId: string, editedAccountData: TServiceAccountPayload) => {
             // Call the updateServiceAccuntAction function to edit the
             // account.
+            const prevServiceAcc = queryClient.getQueryData(['serviceAccounts']);
+
             const { data, error } = await updateServiceAccuntAction(accountId, editedAccountData);
 
             // If there is an error, show an error toast message.
-            if (error) return showToast(false, error);
+            if (error) {
+                queryClient.setQueryData(['serviceAccounts'], prevServiceAcc);
+                return showToast(false, error);
+            }
 
             // If the account is edited successfully, show a success
             // toast message and invalidate the cache.
@@ -117,11 +120,19 @@ const ServiceTableColumn = ({
         async (accountId: string) => {
             // Call the deleteServiceAccuntAction function to delete the
             // account.
+            const prevServiceAcc = queryClient.getQueryData(['serviceAccounts']);
             const { data, error } = await deleteServiceAccuntAction(accountId);
 
             // If there is an error, show an error toast message.
-            if (error) return showToast(false, error);
+            if (error) {
+                queryClient.setQueryData(['serviceAccounts'], prevServiceAcc);
+                return showToast(false, error);
+            }
 
+            queryClient.setQueryData(
+                ['serviceAccounts'],
+                [...(prevServiceAcc as TServiceAccountResponse[]), data],
+            );
             // If the account is deleted successfully, show a success
             // toast message and invalidate the cache.
             const message = (data as { message: string }).message;

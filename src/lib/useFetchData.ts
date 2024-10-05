@@ -21,8 +21,8 @@ export const useFetchData = <TQueryFnData, TError = Error, TData = TQueryFnData>
         queryFn: fetchFunction,
         enabled: !!queryKey,
         staleTime: 10 * 60 * 1000, // Data is considered stale immediately
-        refetchOnMount: false, // Refetch on component mount
-        refetchOnWindowFocus: false, // Refetch when window regains focus
+        refetchOnMount: true, // Refetch on component mount
+        refetchOnWindowFocus: true, // Refetch when window regains focus
         refetchOnReconnect: true, // Refetch on network reconnection
         ...queryOptions,
     });
