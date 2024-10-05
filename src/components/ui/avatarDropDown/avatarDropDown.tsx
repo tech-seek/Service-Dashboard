@@ -61,6 +61,9 @@ const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
                     <DropdownMenuLabel>Name: {session?.data?.user?.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
+                        <Link href={'/dashboard/add-dealer'}>Add Dealer</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                         <Link href={'/dashboard/add-moderator'}>Add Moderator</Link>
                     </DropdownMenuItem>
                     {isHomePage && (

@@ -5,24 +5,23 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 
-interface IUser {
+interface IDealer {
     id: string;
     name: string;
-    password?: string;
 }
 
-interface EditUserDataProps {
-    user: IUser;
-    onEdit: (updatedUser: IUser) => void;
+interface EditDealerDataProps {
+    dealer: IDealer;
+    onEdit: (updatedDealer: IDealer) => void;
 }
 
-const EditModeretorData: FC<EditUserDataProps> = ({ user, onEdit }) => {
+const EditDealerData: FC<EditDealerDataProps> = ({ dealer, onEdit }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [editValues, setEditValues] = useState({ name: user.name, password: user.password });
+    const [editValues, setEditValues] = useState({ name: dealer.name});
 
     const handleSave = () => {
-        const updatedUser = { ...user, name: editValues.name, password: editValues.password };
-        onEdit(updatedUser);
+        const updatedDealer = { ...dealer, name: editValues.name};
+        onEdit(updatedDealer);
         setIsDialogOpen(false); // Close dialog after saving
     };
 
@@ -38,11 +37,11 @@ const EditModeretorData: FC<EditUserDataProps> = ({ user, onEdit }) => {
                 onClick={() => setIsDialogOpen(true)}
             />
 
-            {/* Dialog for editing user */}
+            {/* Dialog for editing Dealer */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Edit User</DialogTitle>
+                        <DialogTitle>Edit Dealer</DialogTitle>
                     </DialogHeader>
 
                     <Input
@@ -50,16 +49,8 @@ const EditModeretorData: FC<EditUserDataProps> = ({ user, onEdit }) => {
                         value={editValues.name}
                         onChange={(e) => handleChange('name', e.target.value)}
                         className='mb-4'
-                        placeholder='Edit username'
+                        placeholder='Edit Dealername'
                     />
-                    <Input
-                        type='text'
-                        value={editValues.password}
-                        onChange={(e) => handleChange('password', e.target.value)}
-                        className='mb-4'
-                        placeholder='Edit password'
-                    />
-
                     <div className='flex justify-end gap-2'>
                         <button
                             className='px-4 py-2 bg-gray-200 text-gray-700 rounded'
@@ -80,4 +71,4 @@ const EditModeretorData: FC<EditUserDataProps> = ({ user, onEdit }) => {
     );
 };
 
-export default EditModeretorData;
+export default EditDealerData;

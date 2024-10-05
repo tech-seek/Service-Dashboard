@@ -8,13 +8,14 @@ import useShowToast from '@/app/hooks/useShowToast';
 import { AddOptions } from '../components';
 import { DataList } from '../components/DataList';
 import { IListItem } from '../components/DataList/DataList';
-import { ADD_SELLER_FORM_FIELDS } from '../static';
+import { ADD_MODERETOR_FORM_FIELDS } from '../static';
+
 
 interface IProps {
     data: TUserRespone[] | null;
 }
 
-const AddSellerContainer: FC<IProps> = ({ data }) => {
+const AddModeretorWrapper: FC<IProps> = ({ data }) => {
     const { showToast } = useShowToast();
     // State to store seller data for optimistic updates
     const [moderatorData, setModeratorData] = useState<IListItem[]>(
@@ -96,7 +97,7 @@ const AddSellerContainer: FC<IProps> = ({ data }) => {
     return (
         <section className='space-y-5 sm:space-y-10 p-5'>
             <AddOptions
-                fromFields={ADD_SELLER_FORM_FIELDS}
+                fromFields={ADD_MODERETOR_FORM_FIELDS}
                 onHandleSubmit={(val: Record<string, unknown>) => handleAdd(val)}
             />
             <DataList
@@ -109,4 +110,4 @@ const AddSellerContainer: FC<IProps> = ({ data }) => {
     );
 };
 
-export default AddSellerContainer;
+export default AddModeretorWrapper;
