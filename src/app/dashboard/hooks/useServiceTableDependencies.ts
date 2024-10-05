@@ -10,7 +10,7 @@ export const useServiceTableDependencies = (
     page: number,
     limit: number,
     searchQuery: string,
-    expiring: string,
+    expiring?: string,
 ) => {
     // Initialize state to store the selected dealer for each service
     const [selectedDealer, setSelectedDealer] = useState<{ [serviceId: string]: string | null }>(
@@ -41,7 +41,7 @@ export const useServiceTableDependencies = (
         isPending,
         isLoading,
     } = useFetchData(
-        ['serviceAccounts', page.toString(), limit.toString(), searchQuery, expiring],
+        ['serviceAccounts', page.toString(), limit.toString(), searchQuery, String(expiring)],
         fetchQueryServicesAcc,
     );
     // Handle date change

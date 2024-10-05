@@ -1,3 +1,4 @@
+'use client'
 import { NAV_LINKS } from '@/statics';
 import Link from 'next/link';
 import React, { FC } from 'react';
@@ -5,11 +6,13 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Icons } from '../icons';
+import { usePathname } from 'next/navigation';
 
 interface IProps {
     isAdmin?: boolean;
 }
 const SmallerDeviceSidebar: FC<IProps> = ({ isAdmin }) => {
+    const pathName = usePathname()
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -33,7 +36,13 @@ const SmallerDeviceSidebar: FC<IProps> = ({ isAdmin }) => {
                                         isHideHistoryBtn ? 'hidden' : '',
                                     )}
                                 >
-                                    <Icon className='h-5 w-5' />
+                                    <Icon  className={cn(
+                                                'h-6 w-6',
+                                                href === '/dashboard/expireing' ? 'text-red-300' : null,
+                                                pathName === href && href === '/dashboard/expireing'
+                                                    ? 'text-red-500'
+                                                    : null,
+                                            )} />
                                     {label}
                                 </Link>
                             );
