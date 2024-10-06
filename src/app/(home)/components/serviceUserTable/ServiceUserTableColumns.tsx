@@ -20,7 +20,6 @@ import { deleteServiceUserAction, updateServiceUserAction } from '@/app/actions/
 import useShowToast from '@/app/hooks/useShowToast';
 import { ServiceUserForm } from '../serviceUserForm';
 
-
 export interface IServiceUserTableColumns {
     data: TServiceUserResponse[];
     providers: TUserRespone[];
@@ -140,7 +139,7 @@ const ServiceUserTableColumns = ({
                 header: 'email',
                 cell: ({ row }) => {
                     const email = row.getValue('email');
-                    return email ?? '--  --';
+                    return email || '--  --';
                 },
             },
             {
@@ -148,7 +147,7 @@ const ServiceUserTableColumns = ({
                 header: 'model',
                 cell: ({ row }) => {
                     const model = row.getValue('model');
-                    return model ?? '--  --';
+                    return model || '--  --';
                 },
             },
             {
