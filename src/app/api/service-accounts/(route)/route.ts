@@ -30,16 +30,21 @@ export const GET = async (req: NextRequest) => {
         const searchQuery = searchParam.get('search') ?? '';
         const page = parseInt(searchParam.get('page') ?? '1', 10);
         const limit = parseInt(searchParam.get('limit') ?? '30', 10);
-
+        const decodedSearchQuery = decodeURIComponent(searchQuery);
         if (isUpdateLeftDays) {
             const res = await updateLeftDaysServiceAccounts();
             return res;
         } else if (all) {
             return await onFindAllServiceAccounts();
         } else if (query === ONGOING) {
-            return await onFindMultiServicesServiceAcc(query, page, limit, searchQuery);
+            return await onFindMultiServicesServiceAcc(
+                query,
+                page,
+                limit,
+                decodedSearchQuery.trim(),
+            );
         } else {
-            return await onFindServiceAccounts(query, page, limit, searchQuery);
+            return await onFindServiceAccounts(query, page, limit, decodedSearchQuery.trim());
         }
     } catch (err) {
         return errorResponse('Internal server error');
