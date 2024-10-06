@@ -7,8 +7,9 @@ import { DeleteService, EditService } from '.';
 interface IProps {
     name: string;
     serviceId: string;
+    totalRecords: number;
 }
-const ServiceName: FC<IProps> = ({ name, serviceId }) => {
+const ServiceName: FC<IProps> = ({ name, serviceId, totalRecords }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [isOpenTooltip, setIsOpenTooltip] = useState(false);
@@ -19,12 +20,18 @@ const ServiceName: FC<IProps> = ({ name, serviceId }) => {
     return (
         <>
             <TooltipProvider delayDuration={TOOL_TIP_DELAY}>
-                <div className="relative block md:hidden">
+                <div className='relative block md:hidden'>
                     <Tooltip open={isOpenTooltip}>
                         <TooltipTrigger asChild>
-                            <div onClick={handleToggle} className='w-fit px-4 mx-auto cursor-pointer'>
-                                <h3 className='font-bold inline-block select-none dark:text-white text-3xl md:text-2xl uppercase mb-4 '>
-                                    {name}
+                            <div
+                                onClick={handleToggle}
+                                className='w-fit px-4 mx-auto cursor-pointer'
+                            >
+                                <h3 className='font-bold inline-flex gap-2 items-center select-none dark:text-white text-3xl md:text-2xl uppercase mb-4 '>
+                                    {name} -{' '}
+                                    <p>
+                                        {totalRecords ?? 0}
+                                    </p>
                                 </h3>
                             </div>
                         </TooltipTrigger>
@@ -41,12 +48,15 @@ const ServiceName: FC<IProps> = ({ name, serviceId }) => {
                     </Tooltip>
                 </div>
 
-                <div className="relative hidden md:block">
+                <div className='relative hidden md:block'>
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <div className='w-fit px-4 mx-auto cursor-pointer'>
-                                <h3 className='font-bold inline-block select-none dark:text-white text-3xl md:text-2xl uppercase mb-4 '>
-                                    {name}
+                                 <h3 className='font-bold inline-flex gap-2 items-center select-none dark:text-white text-3xl md:text-2xl uppercase mb-4 '>
+                                    {name} -{' '}
+                                    <p>
+                                        {totalRecords ?? 0}
+                                    </p>
                                 </h3>
                             </div>
                         </TooltipTrigger>

@@ -166,7 +166,7 @@ const ServiceUserTableColumns = ({
                 ),
                 cell: ({ row }) => {
                     const joinDate = row.getValue('joinDate');
-                    return format(joinDate as Date, 'dd/MM/yyyy');
+                    return format(joinDate as Date, 'dd MMM yyyy');
                 },
             },
             {
@@ -180,7 +180,7 @@ const ServiceUserTableColumns = ({
                 ),
                 cell: ({ row }) => {
                     const endDate = row.getValue('endDate');
-                    return format(endDate as Date, 'dd/MM/yyyy');
+                    return format(endDate as Date, 'dd MMM yyyy');
                 },
             },
             {

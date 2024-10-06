@@ -70,7 +70,7 @@ const CustomTable: FC<IProps> = ({
         typeof totalPage === 'number'
             ? Math.ceil(totalPage / limit)
             : Math.ceil(totalPage[serviceId] / limit);
-
+    const totalRecords = typeof totalPage === 'number' ? totalPage : totalPage[serviceId];
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
     };
@@ -105,12 +105,16 @@ const CustomTable: FC<IProps> = ({
             {/* service name */}
             {pathName.startsWith('/dashboard/expireing') || !isServiceNameEditable ? (
                 <div className='w-fit px-4 mx-auto'>
-                    <h3 className='font-bold inline-block  dark:text-white text-3xl md:text-2xl uppercase mb-4 '>
-                        {serviceName}
+                    <h3 className='font-bold  inline-flex gap-2  dark:text-white text-3xl md:text-2xl uppercase mb-4 '>
+                        {serviceName} - <p>{totalRecords ?? 0}</p>
                     </h3>
                 </div>
             ) : (
-                <ServiceName name={serviceName} serviceId={serviceId ?? ''} />
+                <ServiceName
+                    name={serviceName}
+                    serviceId={serviceId ?? ''}
+                    totalRecords={totalRecords}
+                />
             )}
 
             <div
@@ -124,7 +128,7 @@ const CustomTable: FC<IProps> = ({
                     },
                 )}
             >
-                <Table className='overflow-visible'>
+                <Table className='overflow-visible w-full'>
                     <TableHeader className='text-white'>
                         {getHeaderGroups().map((headerGroup) => (
                             <TableRow

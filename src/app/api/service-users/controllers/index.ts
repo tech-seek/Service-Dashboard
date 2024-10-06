@@ -232,14 +232,19 @@ export const onFindServiceUsersExpiring = async (
     try {
         // Calculate skip based on current page and page size
         const skip = (page - 1) * limit;
-
+        console.log(searchQuery,'inside index');
         // Fetch data with pagination
         const serviceUsers = await db.serviceUser.findMany({
             where: {
                 leftDays: { lte: 3 },
                 OR: [
                     { name: { contains: searchQuery, mode: 'insensitive' } },
-                    { phone: { contains: searchQuery, mode: 'insensitive' } },
+                    {
+                        phone: {
+                            contains: searchQuery,
+                            mode: 'insensitive',
+                        },
+                    },
                     { email: { contains: searchQuery, mode: 'insensitive' } },
                     { service: { name: { contains: searchQuery, mode: 'insensitive' } } },
                 ],
