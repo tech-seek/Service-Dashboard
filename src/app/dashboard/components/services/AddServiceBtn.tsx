@@ -7,6 +7,7 @@ import { FormFieldConfig } from '@/components/ui/customForm/customForm';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { createServiceAction } from '@/app/actions/service';
 import useShowToast from '@/app/hooks/useShowToast';
+import { SERVICES } from '@/statics/queryKey';
 
 interface IProps {
     isOpen: boolean;
@@ -30,16 +31,16 @@ const AddServiceBtn: FC<IProps> = ({ isOpen, setIsOpen }) => {
     const { showToast } = useShowToast();
     const handleAddService = async (val: Record<string, unknown>) => {
         setIsOpen(false);
-        const prevService = queryClient.getQueryData(['services']);
+        const prevService = queryClient.getQueryData([SERVICES]);
         const { data, error } = await createServiceAction(val as TServicePayload);
         if (error) {
-            queryClient.setQueryData(['services'], prevService);
+            queryClient.setQueryData([SERVICES], prevService);
             return showToast(false, error);
         }
-        queryClient.setQueryData(['services'], (old: TServicePayload[]) => [...old, data]);
+        queryClient.setQueryData([SERVICES], (old: TServicePayload[]) => [...old, data]);
         const message = (data as { message: string }).message;
         showToast(true, message);
-        queryClient.invalidateQueries({ queryKey: ['services'] });
+        queryClient.invalidateQueries({ queryKey: [SERVICES] });
     };
 
     return (
