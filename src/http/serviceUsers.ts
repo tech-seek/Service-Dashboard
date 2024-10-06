@@ -29,7 +29,7 @@ export const fetchQueryServicesUserQueryData = async (query: string) => {
 };
 export const fetchQueryServicesUserOnGoing = async (query: string) => {
     const [data, error] = await tryCatch<TServiceUsersDataWithPagination>(
-        `service-users/ongoing?search=${query}`,
+        `service-users/ongoing?${query}`,
     );
     if (error) {
         throw new Error(`${error?.message}`);
@@ -38,7 +38,7 @@ export const fetchQueryServicesUserOnGoing = async (query: string) => {
 };
 export const fetchQueryServicesUserExpiring = async (query: string) => {
     const [data, error] = await tryCatch<TServiceUsersDataWithPagination>(
-        `service-users/expiring?search=${query}`,
+        `service-users/expiring?${query}`,
     );
     if (error) {
         throw new Error(`${error?.message}`);

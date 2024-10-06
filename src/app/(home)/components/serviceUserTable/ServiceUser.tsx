@@ -11,6 +11,7 @@ import useShowToast from '@/app/hooks/useShowToast';
 import { ButtonContainer } from '../buttonContainer';
 import ServiceUserTable from './ServiceUserTable';
 
+
 export type THandleAddServiceUser = (payload: TServiceUserPayload) => void;
 interface IProps extends ISerchParams {
     serviceName: string;
@@ -29,7 +30,8 @@ const ServiceUser = ({
 }: IProps) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const page = parseInt(searchParams['page'] ?? '1', 10);
-    const limit = parseInt(searchParams['limit'] ?? '10', 10);
+    const limit = parseInt(searchParams['limit'] ?? '5', 10);
+
     const { searchQuery } = useSearchQuery();
     const queryClient = useQueryClient();
     const { showToast } = useShowToast();
@@ -59,7 +61,13 @@ const ServiceUser = ({
         totalPage,
         isLoading,
         isPending,
-    } = useServiceUserDependencies(page, limit, searchQuery, isExpiring);
+    } = useServiceUserDependencies(
+        `page=${page}&limit=${limit}&search=${searchQuery}`,
+        page,
+        limit,
+        searchQuery,
+        isExpiring,
+    );
 
     return (
         <section className='mb-10'>
