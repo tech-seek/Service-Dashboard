@@ -7,6 +7,7 @@ import { useFilteredServiceUsers } from './useFilterdServiceUsers';
 
 
 export const useServiceUserDependencies = (
+    query: string,
     page: number,
     limit: number,
     searchQuery: string,
@@ -15,16 +16,15 @@ export const useServiceUserDependencies = (
     const [selectedProvider, setSelectedProvider] = useState<string>();
     const [selectedDates, setSelectedDates] = useState<{ joinDate?: Date; endDate?: Date }>({});
     const fetchServiceUser = isExpiring
-
-        ? () => fetchQueryServicesUserExpiring(searchQuery)
-        : () => fetchQueryServicesUserOnGoing(searchQuery);
+        ? () => fetchQueryServicesUserExpiring(query)
+        : () => fetchQueryServicesUserOnGoing(query);
 
     const {
         data: res,
         isLoading,
         isPending,
     } = useFetchData(
-        ['serviceUsers', page.toString(), limit.toString(), isExpiring.toString(), searchQuery],
+        ['serviceUsers', page.toString(), limit.toString(), isExpiring.toString(), searchQuery,query],
         fetchServiceUser,
     );
 
