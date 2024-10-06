@@ -2,7 +2,6 @@ import { TTaskPayload } from '@/types/task';
 import { db, errorResponse, successResponse, zodErrorResponse } from '@/app/api/helpers';
 import { TaskSchema } from '../validations';
 
-
 // Create a new Task
 export const onCreateTask = async (payload: TTaskPayload) => {
     try {
@@ -70,6 +69,7 @@ export const onFindTasks = async () => {
 export const onFindTask = async (id: string) => {
     try {
         const task = await db.task.findUnique({ where: { id } });
+
         if (!task) return errorResponse('Task not found', 404);
 
         return successResponse(task, 'Task fetched successfully');
@@ -95,12 +95,10 @@ export const onUpdateTask = async (id: string, payload: TTaskPayload) => {
         });
         if (!serviceAccountId) return errorResponse('Service account not found', 404);
 
-        
         const task = await db.task.update({
             where: { id },
             data: payload,
         });
-
 
         if (!task) return errorResponse('Task update failed', 404);
 

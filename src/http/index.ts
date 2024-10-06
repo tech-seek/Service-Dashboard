@@ -3,8 +3,6 @@ import { TTaskResponse } from '@/types/task';
 import { TUserRespone } from '@/types/user';
 import { tryCatch } from '@/lib/trycatch';
 
-
-
 export type TDealersData = {
     data: TDealerResponse[];
 };
@@ -26,7 +24,6 @@ export const fetchDealerData = async () => {
     return data;
 };
 
-
 export const fetchTaskData = async () => {
     const [data, error] = await tryCatch<TTaskData>('tasks');
     if (error) {
@@ -44,7 +41,14 @@ export const getUsers = async () => {
     }
     return data;
 };
+export const getPendingTaskCount = async () => {
+    const [data, error] = await tryCatch('tasks?pending-task-count=true');
+    if (error) {
+        throw new Error(`${error?.message}`);
+    }
+    return data;
+};
 
-export * from './service'
-export * from './serviceAccounts'
-export * from './serviceUsers'
+export * from './service';
+export * from './serviceAccounts';
+export * from './serviceUsers';
