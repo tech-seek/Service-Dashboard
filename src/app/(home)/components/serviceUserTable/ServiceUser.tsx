@@ -68,7 +68,6 @@ const ServiceUser = ({
         searchQuery,
         isExpiring,
     );
-
     return (
         <section className='mb-10'>
             <div className='container'>
