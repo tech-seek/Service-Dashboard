@@ -4,6 +4,7 @@ import { fetchAllServicesAcc, fetchQueryServicesUserExpiring, fetchQueryServices
 import { useMemo, useState } from 'react';
 import { useFetchData } from '@/lib/useFetchData';
 import { useFilteredServiceUsers } from './useFilterdServiceUsers';
+import { SERVICE_ACCOUNTS, SERVICES, USERS } from '@/statics/queryKey';
 
 
 export const useServiceUserDependencies = (
@@ -28,9 +29,9 @@ export const useServiceUserDependencies = (
         fetchServiceUser,
     );
 
-    const { data: services } = useFetchData(['services'], fetchServicesData);
-    const { data: serviceAccounts } = useFetchData(['serviceAccounts'], fetchAllServicesAcc);
-    const { data: users } = useFetchData(['users'], getUsers);
+    const { data: services } = useFetchData([SERVICES], fetchServicesData);
+    const { data: serviceAccounts } = useFetchData([SERVICE_ACCOUNTS], fetchAllServicesAcc);
+    const { data: users } = useFetchData([USERS], getUsers);
 
     const memorizeProviders = useMemo(() => users?.data ?? [], [users?.data]);
 

@@ -14,6 +14,7 @@ import { API_BASE_URL } from '@/app/config/env';
 import { AddServiceBtn } from '@/app/dashboard/components/services';
 import useShowToast from '@/app/hooks/useShowToast';
 import ProfileSettings from '../sidebar/ProfileSettings';
+import { SERVICE_ACCOUNTS, SERVICE_USERS } from '@/statics/queryKey';
 
 
 const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
@@ -33,8 +34,8 @@ const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
                 method: 'POST',
             });
             const data = await response.json();
-            queryClient.invalidateQueries({ queryKey: ['serviceUsers'] });
-            queryClient.invalidateQueries({ queryKey: ['serviceAccounts'] });
+            queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
+            queryClient.invalidateQueries({ queryKey: [SERVICE_ACCOUNTS] });
             if (response.ok) {
                 showToast(true, data.message);
             } else {
