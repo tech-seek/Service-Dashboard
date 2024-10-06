@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { TTaskPayload } from '@/types/task';
-import { errorResponse } from '@/app/api/helpers';
+import { db, errorResponse, successResponse } from '@/app/api/helpers';
 import { onCreateTask, onFindTasks } from '../controllers';
 
 // Create a new Task
@@ -15,10 +15,17 @@ export const POST = async (req: NextRequest) => {
 };
 
 // Get all Tasks
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
     try {
-        const res = await onFindTasks();
-        return res;
+        const searchParams = new URLSearchParams(req.nextUrl.searchParams);
+        const pendingTaskCount = searchParams.get('pending-task-count') ?? '';
+        if (pendingTaskCount) {
+            const pendingTask = await db.task.count({ where: { status: 'pending' } });
+            return successResponse(pendingTask, 'Tasks fetched successfully');
+        } else {
+            const res = await onFindTasks();
+            return res;
+        }
     } catch (err) {
         return errorResponse('Internal Server error');
     }

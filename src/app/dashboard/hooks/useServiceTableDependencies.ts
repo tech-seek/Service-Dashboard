@@ -4,6 +4,7 @@ import { fetchDealerData, fetchQueryServicesAccQueryData, fetchServicesData } fr
 import { useCallback, useMemo, useState } from 'react';
 import { useFetchData } from '@/lib/useFetchData';
 import { useFilteredServiceAccounts } from './useFilteredServiceAccounts';
+import { DEALERS, SERVICE_ACCOUNTS, SERVICES } from '@/statics/queryKey';
 
 export const useServiceTableDependencies = (
     query: string,
@@ -27,10 +28,10 @@ export const useServiceTableDependencies = (
     );
 
     // Fetch services data
-    const { data: services } = useFetchData(['services'], fetchServicesData);
+    const { data: services } = useFetchData([SERVICES], fetchServicesData);
 
     // Fetch dealers data
-    const { data: dealers } = useFetchData(['dealers'], fetchDealerData);
+    const { data: dealers } = useFetchData([DEALERS], fetchDealerData);
 
     // Fetch service accounts data based on the query
     const fetchQueryServicesAcc = () => fetchQueryServicesAccQueryData(query);
@@ -41,7 +42,7 @@ export const useServiceTableDependencies = (
         isPending,
         isLoading,
     } = useFetchData(
-        ['serviceAccounts', page.toString(), limit.toString(), searchQuery, String(expiring)],
+        [SERVICE_ACCOUNTS, page.toString(), limit.toString(), searchQuery, String(expiring)],
         fetchQueryServicesAcc,
     );
     // Handle date change

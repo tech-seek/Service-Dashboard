@@ -17,6 +17,7 @@ import { SelelectAndSearch } from '@/components/ui/selectAndSerch';
 import { createServiceAccuntAction, deleteServiceAccuntAction, updateServiceAccuntAction } from '@/app/actions/serviceAccount';
 import useShowToast from '@/app/hooks/useShowToast';
 import { AddAccDataModalCon, EditAccDataModalCon } from '..';
+import { SERVICE_ACCOUNTS } from '@/statics/queryKey';
 
 
 interface IProps {
@@ -65,17 +66,17 @@ const ServiceTableColumn = ({
         async (newUserData: TServiceAccountPayload) => {
             // Call the createServiceAccuntAction function to add the
             // new account.
-            const prevServiceAcc = queryClient.getQueryData(['serviceAccounts']);
+            const prevServiceAcc = queryClient.getQueryData([SERVICE_ACCOUNTS]);
             const { data, error } = await createServiceAccuntAction(newUserData);
 
             // If there is an error, show an error toast message.
             if (error) {
-                queryClient.setQueryData(['serviceAccounts'], prevServiceAcc);
+                queryClient.setQueryData([SERVICE_ACCOUNTS], prevServiceAcc);
                 return showToast(false, error);
             }
             const message = (data as { message: string }).message;
             showToast(true, message);
-            queryClient.invalidateQueries({ queryKey: ['serviceAccounts'] });
+            queryClient.invalidateQueries({ queryKey: [SERVICE_ACCOUNTS] });
         },
         [showToast, queryClient],
     );
@@ -91,13 +92,13 @@ const ServiceTableColumn = ({
         async (accountId: string, editedAccountData: TServiceAccountPayload) => {
             // Call the updateServiceAccuntAction function to edit the
             // account.
-            const prevServiceAcc = queryClient.getQueryData(['serviceAccounts']);
+            const prevServiceAcc = queryClient.getQueryData([SERVICE_ACCOUNTS]);
 
             const { data, error } = await updateServiceAccuntAction(accountId, editedAccountData);
 
             // If there is an error, show an error toast message.
             if (error) {
-                queryClient.setQueryData(['serviceAccounts'], prevServiceAcc);
+                queryClient.setQueryData([SERVICE_ACCOUNTS], prevServiceAcc);
                 return showToast(false, error);
             }
 
@@ -105,7 +106,7 @@ const ServiceTableColumn = ({
             // toast message and invalidate the cache.
             const message = (data as { message: string }).message;
             showToast(true, message);
-            queryClient.invalidateQueries({ queryKey: ['serviceAccounts'] });
+            queryClient.invalidateQueries({ queryKey: [SERVICE_ACCOUNTS] });
         },
         [showToast, queryClient],
     );
@@ -120,24 +121,24 @@ const ServiceTableColumn = ({
         async (accountId: string) => {
             // Call the deleteServiceAccuntAction function to delete the
             // account.
-            const prevServiceAcc = queryClient.getQueryData(['serviceAccounts']);
+            const prevServiceAcc = queryClient.getQueryData([SERVICE_ACCOUNTS]);
             const { data, error } = await deleteServiceAccuntAction(accountId);
 
             // If there is an error, show an error toast message.
             if (error) {
-                queryClient.setQueryData(['serviceAccounts'], prevServiceAcc);
+                queryClient.setQueryData([SERVICE_ACCOUNTS], prevServiceAcc);
                 return showToast(false, error);
             }
 
             queryClient.setQueryData(
-                ['serviceAccounts'],
+                [SERVICE_ACCOUNTS],
                 [...(prevServiceAcc as TServiceAccountResponse[]), data],
             );
             // If the account is deleted successfully, show a success
             // toast message and invalidate the cache.
             const message = (data as { message: string }).message;
             showToast(true, message);
-            queryClient.invalidateQueries({ queryKey: ['serviceAccounts'] });
+            queryClient.invalidateQueries({ queryKey: [SERVICE_ACCOUNTS] });
         },
         [showToast, queryClient],
     );

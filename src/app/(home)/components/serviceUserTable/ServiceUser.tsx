@@ -10,6 +10,7 @@ import { useServiceUserDependencies } from '@/app/dashboard/hooks';
 import useShowToast from '@/app/hooks/useShowToast';
 import { ButtonContainer } from '../buttonContainer';
 import ServiceUserTable from './ServiceUserTable';
+import { SERVICE_USERS } from '@/statics/queryKey';
 
 
 export type THandleAddServiceUser = (payload: TServiceUserPayload) => void;
@@ -44,7 +45,7 @@ const ServiceUser = ({
         }
         const message = (data as { message: string }).message;
         showToast(true, message);
-        queryClient.invalidateQueries({ queryKey: ['serviceUsers'] });
+        queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
         setIsOpen(false);
     };
     

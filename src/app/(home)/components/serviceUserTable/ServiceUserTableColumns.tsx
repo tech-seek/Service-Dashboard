@@ -19,6 +19,7 @@ import { SelelectAndSearch } from '@/components/ui/selectAndSerch';
 import { deleteServiceUserAction, updateServiceUserAction } from '@/app/actions/serviceUser';
 import useShowToast from '@/app/hooks/useShowToast';
 import { ServiceUserForm } from '../serviceUserForm';
+import { SERVICE_USERS } from '@/statics/queryKey';
 
 export interface IServiceUserTableColumns {
     data: TServiceUserResponse[];
@@ -57,7 +58,7 @@ const ServiceUserTableColumns = ({
         async (id: string) => {
             // Optimistically remove the deleted user from the cache
             queryClient.setQueryData<TServiceUserResponse[]>(
-                ['serviceUsers'],
+                [SERVICE_USERS],
                 (oldData) => oldData?.filter((user) => user.id !== id) || [],
             );
 
@@ -65,7 +66,7 @@ const ServiceUserTableColumns = ({
 
             if (error) {
                 // Roll back changes if there was an error
-                queryClient.invalidateQueries({ queryKey: ['serviceUsers'] });
+                queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
                 return showToast(false, error);
             }
 
@@ -73,7 +74,7 @@ const ServiceUserTableColumns = ({
             showToast(true, message);
 
             // Ensure data stays up-to-date
-            queryClient.invalidateQueries({ queryKey: ['serviceUsers'] });
+            queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
         },
         [showToast, queryClient],
     );
@@ -82,7 +83,7 @@ const ServiceUserTableColumns = ({
         async (id: string, payload: TServiceUserPayload) => {
             // Optimistically update the user in the cache
             queryClient.setQueryData<TServiceUserResponse[]>(
-                ['serviceUsers'],
+                [SERVICE_USERS],
                 (oldData) =>
                     produce(oldData, (draft) => {
                         const index = draft?.findIndex((user) => user.id === id);
@@ -96,7 +97,7 @@ const ServiceUserTableColumns = ({
 
             if (error) {
                 // Roll back changes if there was an error
-                queryClient.invalidateQueries({ queryKey: ['serviceUsers'] });
+                queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
                 return showToast(false, error);
             }
 
@@ -104,7 +105,7 @@ const ServiceUserTableColumns = ({
             showToast(true, message);
 
             // Ensure data stays up-to-date
-            queryClient.invalidateQueries({ queryKey: ['serviceUsers'] });
+            queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
         },
         [showToast, queryClient],
     );

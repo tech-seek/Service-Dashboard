@@ -1,6 +1,7 @@
 'use client';
 
 import { fetchAllServicesAcc, fetchServicesData, fetchTaskData } from '@/http';
+import { SERVICE_ACCOUNTS, SERVICES, TASKS } from '@/statics/queryKey';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -28,13 +29,13 @@ import { TaskHandlerTooltip } from '../taskHandlerTooltip';
 
 const AddTaskModalCon = () => {
     const { data: services, isLoading: isServicesLoading } = useFetchData(
-        ['services'],
+        [SERVICES],
         fetchServicesData,
     );
-    const { data: tasks, isLoading: isTasksLoading } = useFetchData(['tasks'], fetchTaskData);
+    const { data: tasks, isLoading: isTasksLoading } = useFetchData([TASKS], fetchTaskData);
 
     const { data: serviceAccounts, isLoading: isServiceAccLoading } = useFetchData(
-        ['serviceAccounts'],
+        [SERVICE_ACCOUNTS],
         fetchAllServicesAcc,
     );
     const [phNumber, setPhNumber] = useState<string>('');
@@ -52,7 +53,6 @@ const AddTaskModalCon = () => {
     const { showToast } = useShowToast();
     const queryClient = useQueryClient();
     const currentTasks = tasksData?.filter((task) => task.status === activeTab);
-
     const clickEdit = (taskId: string) => {
         // Implement the logic to edit the task
         const findTask = tasksData.find((task) => task.id === taskId);
@@ -106,7 +106,7 @@ const AddTaskModalCon = () => {
         setIsEditing(false);
         setCurrentTaskId(null);
 
-        queryClient.invalidateQueries({ queryKey: ['tasks'] });
+        queryClient.invalidateQueries({ queryKey: [TASKS] });
         setIsSubmitting(false);
     };
 
@@ -116,7 +116,7 @@ const AddTaskModalCon = () => {
         const message = (data as { message: string }).message;
         showToast(true, message);
         setTasksData((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-        queryClient.invalidateQueries({ queryKey: ['tasks'] });
+        queryClient.invalidateQueries({ queryKey: [TASKS] });
     };
 
     const submitTask = async () => {
@@ -147,7 +147,7 @@ const AddTaskModalCon = () => {
         setSelectedServiceAcc(null);
         setSelectedService(null);
 
-        queryClient.invalidateQueries({ queryKey: ['tasks'] });
+        queryClient.invalidateQueries({ queryKey: [TASKS] });
 
         setIsSubmitting(false);
     };
@@ -188,7 +188,7 @@ const AddTaskModalCon = () => {
             prevTasks.map((task) => (task.id === taskId ? { ...task, ...updatedTask } : task)),
         );
 
-        queryClient.invalidateQueries({ queryKey: ['tasks'] });
+        queryClient.invalidateQueries({ queryKey: [TASKS] });
     };
 
     useEffect(() => {

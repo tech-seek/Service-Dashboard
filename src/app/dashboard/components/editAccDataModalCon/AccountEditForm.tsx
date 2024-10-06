@@ -143,7 +143,7 @@ const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }
             <div className='mt-4 md:mt-5 flex justify-center gap-5'>
                 <CustomAlertDialog
                     className='bg-white hover:bg-white text-black'
-                    buttonTitle='Edit'
+                    buttonTitle='Update'
                     messageTitle='Are you absolutely sure?'
                     message='This action cannot be undone. This will update your data from our servers.'
                     onClick={() => {
