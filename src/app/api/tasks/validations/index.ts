@@ -1,14 +1,17 @@
 import { z } from 'zod';
 
+
 // Define the TaskStatus enum
 const TaskStatusEnum = z.enum(['pending', 'solved']);
 
 // Create Zod schema for the Task model
-const ElevenDigitStringSchema = z.string().regex(/^\d{11}$/, {
-    message: 'Enter a valid 11-digit number',
-});
+// const ElevenDigitStringSchema = z.string().regex(/^\d{11}$/, {
+//     message: 'Enter a valid 11-digit number',
+// });
 export const TaskSchema = z.object({
-    number: ElevenDigitStringSchema,
+    number: z
+        .string({ required_error: 'number is required' })
+        .min(1, { message: 'number is required' }),
     serviceId: z.string({ required_error: 'Service ID is required' }).uuid({
         message: 'Invalid Service ID ',
     }),

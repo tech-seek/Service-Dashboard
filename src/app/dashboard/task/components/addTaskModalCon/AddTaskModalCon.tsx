@@ -139,7 +139,6 @@ const AddTaskModalCon = () => {
             return showToast(false, error);
         }
         const createdTask = (res as { data: TTaskResponse }).data;
-        console.log('🚀 > file: AddTaskModalCon.tsx:138 > submitTask > createdTask:', createdTask);
         showToast(true, 'Task created successfully!');
         setTasksData((prevTasks) => [...prevTasks, createdTask]);
 
