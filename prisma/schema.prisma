@@ -66,7 +66,7 @@ model ServiceAccount {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@index([id, email])
+  @@index([id, email,endDate])
   @@map("service_accounts")
 }
 
@@ -102,7 +102,7 @@ model ServiceUser {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime?      @updatedAt
 
-  @@index([id, serviceAccountId])
+  @@index([id, serviceAccountId,endDate])
   @@map("service_users")
 }
 
