@@ -24,8 +24,9 @@ model User {
   password String
   role     Role
 
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
   ServiceUsers ServiceUser[]
   History      History[]
 
@@ -41,7 +42,7 @@ model Service {
   History        History[]
   Task           Task[]
   createdAt      DateTime         @default(now())
-  updatedAt      DateTime?
+  updatedAt      DateTime?        @updatedAt
 
   @@index([id])
   @@map("services")
@@ -63,7 +64,7 @@ model ServiceAccount {
   Task        Task[]
 
   createdAt DateTime  @default(now())
-  updatedAt DateTime?
+  updatedAt DateTime? @updatedAt
 
   @@index([id, email])
   @@map("service_accounts")
@@ -75,7 +76,7 @@ model Dealer {
   serviceAccount ServiceAccount[]
 
   createdAt DateTime  @default(now())
-  updatedAt DateTime?
+  updatedAt DateTime? @updatedAt
 
   @@index([id])
   @@map("dealers")
@@ -99,7 +100,7 @@ model ServiceUser {
   providerName     String
   provider         User           @relation(fields: [providerName], references: [userName])
   createdAt        DateTime       @default(now())
-  updatedAt        DateTime?
+  updatedAt        DateTime?      @updatedAt
 
   @@index([id, serviceAccountId])
   @@map("service_users")
@@ -115,23 +116,24 @@ model Task {
   description      String
   status           TaskStatus
   createdAt        DateTime       @default(now())
-  updatedAt        DateTime?
+  updatedAt        DateTime?      @updatedAt
 
   @@index([id])
   @@map("tasks")
 }
 
 model History {
-  id         String  @id @default(uuid())
+  id         String    @id @default(uuid())
   name       String
   phone      String
   serviceId  String
-  services   Service @relation(fields: [serviceId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  services   Service   @relation(fields: [serviceId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   providerId String
-  providers  User    @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  providers  User      @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   lastExpire String
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+
   @@index([id, serviceId, providerId])
   @@map("histories")
 }

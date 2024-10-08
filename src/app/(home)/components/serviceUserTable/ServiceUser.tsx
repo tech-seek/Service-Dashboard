@@ -56,9 +56,11 @@ const ServiceUser = ({
         joinSelectedDate,
         selectedProvider,
         serviceAccounts,
-        providers,
         services,
+        providers,
         setSelectedProvider,
+        selectedService,
+        setSelectedService,
         totalPage,
         isLoading,
         isPending,
@@ -90,6 +92,8 @@ const ServiceUser = ({
                     endSelectedDate={endSelectedDate}
                     selectedProvider={selectedProvider}
                     setSelectedProvider={setSelectedProvider}
+                    selectedService={selectedService}
+                    setSelectedService={setSelectedService}
                     providers={providers}
                     serviceName={serviceName}
                     isLoading={isLoading}

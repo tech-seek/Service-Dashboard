@@ -1,5 +1,6 @@
 'use client';
 
+import { SERVICE_USERS } from '@/statics/queryKey';
 import { QueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -19,7 +20,6 @@ import { SelelectAndSearch } from '@/components/ui/selectAndSerch';
 import { deleteServiceUserAction, updateServiceUserAction } from '@/app/actions/serviceUser';
 import useShowToast from '@/app/hooks/useShowToast';
 import { ServiceUserForm } from '../serviceUserForm';
-import { SERVICE_USERS } from '@/statics/queryKey';
 
 export interface IServiceUserTableColumns {
     data: TServiceUserResponse[];
@@ -28,9 +28,11 @@ export interface IServiceUserTableColumns {
     serviceAccounts: TServiceAccountResponse[];
     joinSelectedDate: Date | undefined;
     endSelectedDate: Date | undefined;
-    selectedProvider: string | undefined;
     queryClient: QueryClient;
+    selectedProvider: string | undefined;
     setSelectedProvider: React.Dispatch<React.SetStateAction<string | undefined>>;
+    selectedService: string | undefined;
+    setSelectedService: React.Dispatch<React.SetStateAction<string | undefined>>;
     onDateChange: (dateType: 'joinDate' | 'endDate', date: Date | undefined) => void;
 }
 
@@ -42,6 +44,8 @@ const ServiceUserTableColumns = ({
     endSelectedDate,
     selectedProvider,
     setSelectedProvider,
+    selectedService,
+    setSelectedService,
     onDateChange,
     queryClient,
 }: IServiceUserTableColumns) => {
@@ -52,6 +56,12 @@ const ServiceUserTableColumns = ({
             setSelectedProvider(provider);
         },
         [setSelectedProvider],
+    );
+    const handleServiceChange = useCallback(
+        (service: string | undefined) => {
+            setSelectedService(service);
+        },
+        [setSelectedService],
     );
 
     const handleDelete = useCallback(
@@ -153,7 +163,26 @@ const ServiceUserTableColumns = ({
             },
             {
                 accessorKey: 'services',
-                header: 'services',
+                header: ({ column }) => {
+                    const uniqueService = Array.from(
+                        new Map(services.map((item) => [item.name, item])).values(),
+                    );
+                    const serviceOptions = uniqueService.map(({ name, id }) => ({
+                        id,
+                        name: name ?? '',
+                    }));
+                    return (
+                        <SelelectAndSearch
+                            placeholder='Services'
+                            options={serviceOptions}
+                            value={selectedService ?? ''}
+                            onChange={(value) => {
+                                handleServiceChange(value);
+                                column.setFilterValue(value);
+                            }}
+                        />
+                    );
+                },
                 cell: ({ row }) => row.original.service.name,
             },
             {
@@ -278,18 +307,7 @@ const ServiceUserTableColumns = ({
                 },
             },
         ],
-        [
-            joinSelectedDate,
-            onDateChange,
-            endSelectedDate,
-            providers,
-            selectedProvider,
-            handleProviderChange,
-            services,
-            serviceAccounts,
-            handleEditUser,
-            handleDelete,
-        ],
+        [services, selectedService, handleServiceChange, joinSelectedDate, onDateChange, endSelectedDate, providers, selectedProvider, handleProviderChange, serviceAccounts, handleEditUser, handleDelete],
     );
 
     return columns;
