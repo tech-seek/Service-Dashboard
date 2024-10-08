@@ -1,7 +1,6 @@
 import { calculateLeftDays } from '@/lib/utils';
 import { db, errorResponse, successResponse } from '../helpers';
 
-
 const BATCH_SIZE = 50; // Adjust the batch size according to your database's capability
 
 // Utility function to update left days for both service users and service accounts
@@ -13,12 +12,9 @@ export const updateLeftDays = async () => {
             db.serviceUser.findMany({ select: { id: true, endDate: true } }),
         ]);
 
-        let updatedServiceAccountsCount = 0;
-        let updatedServiceUsersCount = 0;
-
         // Helper function to update left days for a batch of records
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const updateBatch = async (batch:any[], isAccount: boolean) => {
+        const updateBatch = async (batch: any[], isAccount: boolean) => {
             const updatePromises = batch.map(async (record) => {
                 const endDate = record?.endDate.toISOString() ?? '';
                 const leftDays = calculateLeftDays(endDate);
@@ -44,19 +40,29 @@ export const updateLeftDays = async () => {
             const results = await Promise.all(updatePromises);
             return results.reduce((sum: number, val) => sum + val, 0);
         };
-
+        // Concurrent batch processing for service accounts
+        const accountBatchPromises = [];
         // Process service accounts in batches
         for (let i = 0; i < serviceAccounts.length; i += BATCH_SIZE) {
             const batch = serviceAccounts.slice(i, i + BATCH_SIZE);
-            updatedServiceAccountsCount += await updateBatch(batch, true);
+            accountBatchPromises.push(updateBatch(batch, true));
         }
+        const updatedServiceAccountsCount = (await Promise.all(accountBatchPromises)).reduce(
+            (sum, count) => sum + count,
+            0,
+        );
 
+        // Concurrent batch processing for service users
+        const userBatchPromises = [];
         // Process service users in batches
         for (let i = 0; i < serviceUsers.length; i += BATCH_SIZE) {
             const batch = serviceUsers.slice(i, i + BATCH_SIZE);
-            updatedServiceUsersCount += await updateBatch(batch, false);
+            userBatchPromises.push(updateBatch(batch, false));
         }
-
+        const updatedServiceUsersCount = (await Promise.all(userBatchPromises)).reduce(
+            (sum, count) => sum + count,
+            0,
+        );
         return successResponse(
             `Updated ${updatedServiceAccountsCount} service accounts and ${updatedServiceUsersCount} service users`,
         );
