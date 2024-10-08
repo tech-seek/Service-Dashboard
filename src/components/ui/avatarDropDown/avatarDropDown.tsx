@@ -30,7 +30,9 @@ const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
 
     async function handleUpdateLeftDays() {
         try {
-            const response = await fetch(`${API_BASE_URL}/update-left-days`);
+            const response = await fetch(`${API_BASE_URL}/update-left-days`, {
+                method: 'POST',
+            });
             const data = await response.json();
             queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
             queryClient.invalidateQueries({ queryKey: [SERVICE_ACCOUNTS] });
