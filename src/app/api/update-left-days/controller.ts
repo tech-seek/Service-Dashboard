@@ -1,15 +1,16 @@
 import { calculateLeftDays } from '@/lib/utils';
 import { db, errorResponse, successResponse } from '../helpers';
 
-const BATCH_SIZE = 100; // Adjust the batch size according to your database's capability
+
+const BATCH_SIZE = 50; // Adjust the batch size according to your database's capability
 
 // Utility function to update left days for both service users and service accounts
 export const updateLeftDays = async () => {
     try {
         // Fetch service accounts and service users
         const [serviceAccounts, serviceUsers] = await Promise.all([
-            db.serviceAccount.findMany(),
-            db.serviceUser.findMany(),
+            db.serviceAccount.findMany({ select: { id: true, endDate: true } }),
+            db.serviceUser.findMany({ select: { id: true, endDate: true } }),
         ]);
 
         let updatedServiceAccountsCount = 0;
