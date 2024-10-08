@@ -1,5 +1,6 @@
 'use client';
 
+import { format } from 'date-fns';
 import React, { FC, PropsWithChildren, useMemo, useState } from 'react';
 import { TDealerResponse } from '@/types/dealer';
 import { TServiceAccountPayload, TServiceAccountResponse } from '@/types/serviceAccount';
@@ -7,10 +8,16 @@ import { CustomAlertDialog } from '@/components/ui/customAlertDialog';
 import { DatePicker } from '@/components/ui/datePicker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { SelelectAndSearch } from '@/components/ui/selectAndSerch';
 import { useDateField, useFormField } from '../../hooks';
-
 
 interface IProps extends PropsWithChildren {
     rowData?: TServiceAccountResponse;
@@ -31,6 +38,7 @@ const renderField = (label: string, fieldId: string, fieldComponent: React.React
 );
 
 const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }) => {
+    console.log('🚀 > file: AccountEditForm.tsx:34 > rowData:', rowData);
     const nameField = useFormField(rowData?.email ?? '');
     const passwordField = useFormField(rowData?.password ?? '');
     const joinDateField = useDateField(rowData?.joinDate ?? '');
@@ -43,6 +51,9 @@ const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }
         () => Array.from(new Set(dealers.map(({ id, name }) => ({ id, name })))),
         [dealers],
     );
+    const updatedAt = rowData?.updatedAt
+        ? format(new Date(rowData.updatedAt), 'dd MMM yyyy hh:mm:ss')
+        : '-- -- -- -- --';
     // handle the edit accounts
     const handleEdit = () => {
         const dealerId = dealers.find(({ name }) => name === selectedDealer)?.id ?? '';
@@ -140,7 +151,10 @@ const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }
                 )}
             </div>
             {children}
-            <div className='mt-4 md:mt-5 flex justify-center gap-5'>
+            <div className='mt-4 md:mt-5 flex justify-center gap-5 relative'>
+                <span className='absolute top-1/2 -translate-y-1/2 left-0'>
+                    last updated: {updatedAt}
+                </span>
                 <CustomAlertDialog
                     className='bg-white hover:bg-white text-black'
                     buttonTitle='Update'
