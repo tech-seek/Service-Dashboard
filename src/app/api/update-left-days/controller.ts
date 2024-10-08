@@ -2,7 +2,7 @@
 import { calculateLeftDays } from '@/lib/utils';
 import { db, errorResponse, successResponse } from '../helpers';
 
-const BATCH_SIZE = 50; // Adjust the batch size according to your database's capability
+const BATCH_SIZE = 10; // Adjust the batch size according to your database's capability
 
 // Helper function to update left days for a batch of records
 const updateBatch = async (batch: any[], isAccount: boolean) => {
