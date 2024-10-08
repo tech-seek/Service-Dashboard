@@ -39,7 +39,7 @@ const ButtonContainer: FC<IProps> = ({
                 >
                     <Link href='/dashboard/task' className='relative'>
                         task
-                        <span className='inline-flex items-center justify-center size-6 rounded-full text-white bg-primary dark:bg-cream dark:text-zinc-800 absolute -top-3 -right-2'>
+                        <span className='inline-flex items-center justify-center size-6 rounded-full dark:text-white dark:bg-primary bg-cream text-zinc-800 absolute -top-3 -right-2'>
                             {pendingTasks ?? 0}
                         </span>
                     </Link>

@@ -9,7 +9,7 @@ interface IProps {
 
 const ModalContent: FC<IProps> = ({ title, modalContentProps }) => {
   return (
-    <DialogContent className="w-full max-w-lg p-4 md:p-5  bg-black  flex flex-col text-white capitalize">
+    <DialogContent className="w-full max-w-screen-lg p-4 md:p-5  bg-black  flex flex-col text-white capitalize">
       <DialogHeader>
         <DialogTitle className='text-xl md:text-2xl text-center font-bold text-white uppercase'>{title}</DialogTitle>
       </DialogHeader>
