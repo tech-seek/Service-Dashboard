@@ -1,42 +1,56 @@
+;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { calculateLeftDays } from '@/lib/utils';
 import { db, errorResponse, successResponse } from '../helpers';
 
+
 const BATCH_SIZE = 10; // Adjust the batch size according to your database's capability
 
-// Helper function to update left days for a batch of records using updateMany
-const updateBatch = async (batch: any[], isAccount: boolean) => {
-    const updateData = batch
-        .map((record) => {
-            const endDate = record?.endDate.toISOString() ?? '';
-            const leftDays = calculateLeftDays(endDate);
-            return {
-                id: record.id,
-                leftDays: leftDays >= 0 ? leftDays : null, // Only update if leftDays >= 0
-            };
-        })
-        .filter((record) => record.leftDays !== null); // Filter out invalid updates
+// Helper function to update many records at once
+const updateManyRecords = async (ids: string[], leftDays: number, isAccount: boolean) => {
+    try {
+        await (db[isAccount ? 'serviceAccount' : 'serviceUser'] as any).updateMany({
+            where: { id: { in: ids } },
+            data: { leftDays },
+        });
+        return ids.length; // Return the number of updated records
+    } catch (error) {
+        console.error(
+            `Error updating ${isAccount ? 'service accounts' : 'service users'} with leftDays=${leftDays}:`,
+            error,
+        );
+        return 0; // Return 0 for failed updates
+    }
+};
 
-    if (updateData.length > 0) {
-        try {
-            // Use updateMany to update records in bulk
-            const updatedCount = await (
-                db[isAccount ? 'serviceAccount' : 'serviceUser'] as any
-            ).updateMany({
-                where: {
-                    id: { in: updateData.map((record: any) => record.id) },
-                },
-                data: {
-                    leftDays: updateData.map((record: any) => record.leftDays),
-                },
-            });
-            return updatedCount.count; // Return the number of successfully updated records
-        } catch (error) {
-            console.error(`Error updating ${isAccount ? 'accounts' : 'users'}:`, error);
-            return 0; // Return 0 for failed updates
+// Helper function to process batches of records
+const processBatches = async (records: any[], isAccount: boolean) => {
+   const updates: Record<number, string[]> = {};
+
+    // Group records by leftDays value
+    records.forEach((record) => {
+        const endDate = record?.endDate.toISOString() ?? '';
+        const leftDays = calculateLeftDays(endDate);
+
+        if (leftDays >= 0) {
+            if (!updates[leftDays]) {
+                updates[leftDays] = [];
+            }
+            updates[leftDays].push(record.id); // Group by leftDays
+        }
+    });
+
+    const batchPromises = [];
+    for (const [leftDays, ids] of Object.entries(updates)) {
+        // Process records with the same leftDays in batches
+        for (let i = 0; i < ids.length; i += BATCH_SIZE) {
+            const batch = ids.slice(i, i + BATCH_SIZE);
+            batchPromises.push(updateManyRecords(batch, Number(leftDays), isAccount));
         }
     }
-    return 0;
+
+    const updatedCount = (await Promise.all(batchPromises)).reduce((sum, count) => sum + count, 0);
+    return updatedCount;
 };
 
 // Function to update service accounts
@@ -45,26 +59,16 @@ const updateServiceAccounts = async () => {
         select: { id: true, endDate: true },
     });
 
-    const batchPromises = [];
-    for (let i = 0; i < serviceAccounts.length; i += BATCH_SIZE) {
-        const batch = serviceAccounts.slice(i, i + BATCH_SIZE);
-        batchPromises.push(updateBatch(batch, true));
-    }
-    const updatedCount = (await Promise.all(batchPromises)).reduce((sum, count) => sum + count, 0);
-    return updatedCount;
+    return await processBatches(serviceAccounts, true);
 };
 
 // Function to update service users
 const updateServiceUsers = async () => {
-    const serviceUsers = await db.serviceUser.findMany({ select: { id: true, endDate: true } });
+    const serviceUsers = await db.serviceUser.findMany({
+        select: { id: true, endDate: true },
+    });
 
-    const batchPromises = [];
-    for (let i = 0; i < serviceUsers.length; i += BATCH_SIZE) {
-        const batch = serviceUsers.slice(i, i + BATCH_SIZE);
-        batchPromises.push(updateBatch(batch, false));
-    }
-    const updatedCount = (await Promise.all(batchPromises)).reduce((sum, count) => sum + count, 0);
-    return updatedCount;
+    return await processBatches(serviceUsers, false);
 };
 
 // Main function to update left days for both service accounts and service users
