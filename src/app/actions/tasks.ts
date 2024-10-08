@@ -1,19 +1,19 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { TTaskPayload } from '@/types/task';
 import { tryCatch } from '@/lib/trycatch';
-import { TTaskPayload, TTaskResponse } from '@/types/task';
-
 
 export const createTasksAction = async (payload: TTaskPayload) => {
-    const [res, error] = await tryCatch('tasks', payload, { method: 'POST' });
+    console.log('🚀 > file: tasks.ts:9 > createTasksAction > payload:', payload);
+    const [data, error] = await tryCatch('tasks', payload, { method: 'POST' });
     revalidatePath('/');
-    return { data: (res as { data: TTaskResponse }).data, error: error?.message };
+    return { data, error: error?.message };
 };
 
 export const updateTaskAction = async (id: string, payload: TTaskPayload) => {
     const [data, error] = await tryCatch(`tasks/${id}`, payload, { method: 'PUT' });
-    revalidatePath('/');    
+    revalidatePath('/');
     return { data, error: error?.message };
 };
 
