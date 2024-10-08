@@ -4,31 +4,39 @@ import { db, errorResponse, successResponse } from '../helpers';
 
 const BATCH_SIZE = 10; // Adjust the batch size according to your database's capability
 
-// Helper function to update left days for a batch of records
+// Helper function to update left days for a batch of records using updateMany
 const updateBatch = async (batch: any[], isAccount: boolean) => {
-    const updatePromises = batch.map(async (record) => {
-        const endDate = record?.endDate.toISOString() ?? '';
-        const leftDays = calculateLeftDays(endDate);
-        if (leftDays >= 0) {
-            try {
-                await (db[isAccount ? 'serviceAccount' : 'serviceUser'] as any).update({
-                    where: { id: record.id },
-                    data: { leftDays },
-                });
-                return 1; // Return 1 for successful updates
-            } catch (error) {
-                console.error(
-                    `Error updating ${isAccount ? 'account' : 'user'} ${record.id}:`,
-                    error,
-                );
-                return 0; // Return 0 for failed updates
-            }
-        }
-        return 0;
-    });
+    const updateData = batch
+        .map((record) => {
+            const endDate = record?.endDate.toISOString() ?? '';
+            const leftDays = calculateLeftDays(endDate);
+            return {
+                id: record.id,
+                leftDays: leftDays >= 0 ? leftDays : null, // Only update if leftDays >= 0
+            };
+        })
+        .filter((record) => record.leftDays !== null); // Filter out invalid updates
 
-    const results = await Promise.all(updatePromises);
-    return results.reduce((sum: number, val) => sum + val, 0);
+    if (updateData.length > 0) {
+        try {
+            // Use updateMany to update records in bulk
+            const updatedCount = await (
+                db[isAccount ? 'serviceAccount' : 'serviceUser'] as any
+            ).updateMany({
+                where: {
+                    id: { in: updateData.map((record: any) => record.id) },
+                },
+                data: {
+                    leftDays: updateData.map((record: any) => record.leftDays),
+                },
+            });
+            return updatedCount.count; // Return the number of successfully updated records
+        } catch (error) {
+            console.error(`Error updating ${isAccount ? 'accounts' : 'users'}:`, error);
+            return 0; // Return 0 for failed updates
+        }
+    }
+    return 0;
 };
 
 // Function to update service accounts
