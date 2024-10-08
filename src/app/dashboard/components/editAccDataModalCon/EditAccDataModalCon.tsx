@@ -55,16 +55,16 @@ const EditAccDataModalCon: FC<IProps> = ({ rowData, onDelete, onEdit, dealers })
                 },
             },
             {
-                accessorKey: 'joinDate',
-                header: 'Join Date',
+                accessorKey: 'endDate',
+                header: 'Expriy Date',
                 cell: ({ row }) => {
-                    const joinDate = row.getValue('joinDate');
-                    return format(joinDate as Date, 'dd MMM yyyy');
+                    const endDate = row.getValue('endDate');
+                    return format(endDate as Date, 'dd MMM yyyy');
                 },
             },
             {
                 accessorKey: 'leftDays',
-                header: 'End Date',
+                header: 'Left days',
                 cell: ({ row }) => {
                     const leftDays = row.getValue('leftDays');
                     return `${leftDays} days`;

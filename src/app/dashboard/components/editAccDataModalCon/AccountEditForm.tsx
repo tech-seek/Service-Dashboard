@@ -151,8 +151,11 @@ const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }
                 )}
             </div>
             {children}
-            <div className='mt-4 md:mt-5 flex justify-center gap-5 relative'>
-                <span className='absolute top-1/2 -translate-y-1/2 left-0'>
+            <div className='mt-4 md:mt-5 flex max-lg:flex-col justify-center gap-5 relative'>
+                <span className='lg:hidden'>
+                    last updated: {updatedAt}
+                </span>
+                <span className=' max-lg:hidden absolute top-1/2 -translate-y-1/2 left-0'>
                     last updated: {updatedAt}
                 </span>
                 <CustomAlertDialog
