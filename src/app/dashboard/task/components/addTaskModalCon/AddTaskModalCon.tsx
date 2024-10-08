@@ -87,7 +87,7 @@ const AddTaskModalCon = () => {
 
         const { data, error } = await updateTaskAction(currentTaskId, editedTaskData);
         if (error) {
-            return showToast(false, error || 'Failed to edit task');
+            return showToast(false, error);
         }
 
         const message = (data as { message: string }).message;
@@ -134,13 +134,14 @@ const AddTaskModalCon = () => {
             status: 'pending', // Newly created tasks default to 'pending'
         };
 
-        const { data, error } = await createTasksAction(taskPayload);
+        const { data:res, error } = await createTasksAction(taskPayload);
         if (error) {
-            return showToast(false, error || 'Failed to create task');
+            return showToast(false, error);
         }
-
+        const createdTask = (res as { data: TTaskResponse }).data;
+        console.log('🚀 > file: AddTaskModalCon.tsx:138 > submitTask > createdTask:', createdTask);
         showToast(true, 'Task created successfully!');
-        setTasksData((prevTasks) => [...prevTasks, data]);
+        setTasksData((prevTasks) => [...prevTasks, createdTask]);
 
         setPhNumber('');
         setTaskDescription('');
@@ -195,7 +196,7 @@ const AddTaskModalCon = () => {
         if (tasks?.data) {
             setTasksData(tasks.data);
         }
-    }, [tasks]);
+    }, [tasks?.data]);
 
     const requestOptions = useMemo(
         () => serviceAccounts?.data.map(({ id, email }) => ({ id, email })),
