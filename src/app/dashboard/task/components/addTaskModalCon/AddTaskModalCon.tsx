@@ -66,48 +66,53 @@ const AddTaskModalCon = () => {
         setCurrentTaskId(taskId); // Save the current task ID
     };
     const handleEditTask = async () => {
-        setIsSubmitting(true);
-        if (
-            !phNumber ||
-            !taskDescription ||
-            !selectedServiceId ||
-            !selectedServiceAccId ||
-            !currentTaskId
-        ) {
-            return showToast(false, 'Please fill out all fields');
+        try {
+            setIsSubmitting(true);
+            if (
+                !phNumber ||
+                !taskDescription ||
+                !selectedServiceId ||
+                !selectedServiceAccId ||
+                !currentTaskId
+            ) {
+                return showToast(false, 'Please fill out all fields');
+            }
+
+            const editedTaskData: TTaskPayload = {
+                number: phNumber,
+                serviceId: selectedServiceId,
+                serviceAccountId: selectedServiceAccId,
+                description: taskDescription,
+                status: activeTab === 'pending' ? 'pending' : 'solved',
+            };
+
+            const { data, error } = await updateTaskAction(currentTaskId, editedTaskData);
+            if (error) {
+                return showToast(false, error);
+            }
+
+            const message = (data as { message: string }).message;
+            showToast(true, message);
+            setTasksData((prevTasks) =>
+                prevTasks.map((task) =>
+                    task.id === currentTaskId ? { ...task, ...editedTaskData } : task,
+                ),
+            );
+
+            // Reset form fields
+            setPhNumber('');
+            setTaskDescription('');
+            setSelectedServiceAcc(null);
+            setSelectedService(null);
+            setIsEditing(false);
+            setCurrentTaskId(null);
+
+            queryClient.invalidateQueries({ queryKey: [TASKS] });
+        } catch (error) {
+            setIsSubmitting(false);
+        } finally {
+            setIsSubmitting(false);
         }
-
-        const editedTaskData: TTaskPayload = {
-            number: phNumber,
-            serviceId: selectedServiceId,
-            serviceAccountId: selectedServiceAccId,
-            description: taskDescription,
-            status: activeTab === 'pending' ? 'pending' : 'solved',
-        };
-
-        const { data, error } = await updateTaskAction(currentTaskId, editedTaskData);
-        if (error) {
-            return showToast(false, error);
-        }
-
-        const message = (data as { message: string }).message;
-        showToast(true, message);
-        setTasksData((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === currentTaskId ? { ...task, ...editedTaskData } : task,
-            ),
-        );
-
-        // Reset form fields
-        setPhNumber('');
-        setTaskDescription('');
-        setSelectedServiceAcc(null);
-        setSelectedService(null);
-        setIsEditing(false);
-        setCurrentTaskId(null);
-
-        queryClient.invalidateQueries({ queryKey: [TASKS] });
-        setIsSubmitting(false);
     };
 
     const handleDeleteTask = async (taskId: string) => {
@@ -120,36 +125,36 @@ const AddTaskModalCon = () => {
     };
 
     const submitTask = async () => {
-        setIsSubmitting(true);
-        if (!phNumber || !taskDescription || !selectedService || !selectedServiceAcc) {
-            return showToast(false, 'Please fill out all fields');
+        try {
+            setIsSubmitting(true);
+            // Prepare the payload according to TTaskPayload
+            const taskPayload: TTaskPayload = {
+                number: phNumber.trim(),
+                serviceId: selectedServiceId!, // assuming the serviceId is mapped to selectedService
+                serviceAccountId: selectedServiceAccId!, // assuming the serviceAccountId is mapped to selectedRequest
+                description: taskDescription,
+                status: 'pending', // Newly created tasks default to 'pending'
+            };
+
+            const { data: res, error } = await createTasksAction(taskPayload);
+            if (error) {
+                return showToast(false, error);
+            }
+            const createdTask = (res as { data: TTaskResponse }).data;
+            showToast(true, 'Task created successfully!');
+            setTasksData((prevTasks) => [...prevTasks, createdTask]);
+
+            setPhNumber('');
+            setTaskDescription('');
+            setSelectedServiceAcc(null);
+            setSelectedService(null);
+
+            queryClient.invalidateQueries({ queryKey: [TASKS] });
+        } catch (error) {
+            setIsSubmitting(false);
+        } finally {
+            setIsSubmitting(false);
         }
-
-        // Prepare the payload according to TTaskPayload
-        const taskPayload: TTaskPayload = {
-            number: phNumber,
-            serviceId: selectedServiceId!, // assuming the serviceId is mapped to selectedService
-            serviceAccountId: selectedServiceAccId!, // assuming the serviceAccountId is mapped to selectedRequest
-            description: taskDescription,
-            status: 'pending', // Newly created tasks default to 'pending'
-        };
-
-        const { data:res, error } = await createTasksAction(taskPayload);
-        if (error) {
-            return showToast(false, error);
-        }
-        const createdTask = (res as { data: TTaskResponse }).data;
-        showToast(true, 'Task created successfully!');
-        setTasksData((prevTasks) => [...prevTasks, createdTask]);
-
-        setPhNumber('');
-        setTaskDescription('');
-        setSelectedServiceAcc(null);
-        setSelectedService(null);
-
-        queryClient.invalidateQueries({ queryKey: [TASKS] });
-
-        setIsSubmitting(false);
     };
 
     const handleSolved = async (taskId: string) => {
@@ -213,7 +218,7 @@ const AddTaskModalCon = () => {
                     </Label>
                     <Input
                         value={phNumber}
-                        type='number'
+                        type='text'
                         onChange={(e) => setPhNumber(e.target.value)}
                         id='phNumber'
                         className='col-span-3 dark:bg-slate-900 text-lg py-1'
@@ -381,10 +386,10 @@ const AddTaskModalCon = () => {
                                                 <span className='min-w-[13%] flex-1 px-2 pt-2 pb-1.5'>
                                                     {service.name}
                                                 </span>
-                                                <span className='min-w-[38%] flex-1 px-2 pt-2 pb-1.5 '>
+                                                <span className='min-w-[30%] flex-1 px-2 pt-2 pb-1.5 '>
                                                     {serviceAccount.email}
                                                 </span>
-                                                <span className='min-w-[16%] flex-1 px-2 pt-2 pb-1.5'>
+                                                <span className='min-w-[24%] flex-1 px-2 pt-2 pb-1.5 text-nowrap'>
                                                     {number}
                                                 </span>
                                                 <span className='min-w-[21%] flex-1 px-2 pt-2 pb-1.5 whitespace-nowrap'>
