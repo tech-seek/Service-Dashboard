@@ -1,10 +1,10 @@
 'use client';
 
 import { fetchAllServicesAcc, fetchQueryServicesUserExpiring, fetchQueryServicesUserOnGoing, fetchServicesData, getUsers } from '@/http';
+import { SERVICE_ACCOUNTS, SERVICES, USERS } from '@/statics/queryKey';
 import { useMemo, useState } from 'react';
 import { useFetchData } from '@/lib/useFetchData';
 import { useFilteredServiceUsers } from './useFilterdServiceUsers';
-import { SERVICE_ACCOUNTS, SERVICES, USERS } from '@/statics/queryKey';
 
 
 export const useServiceUserDependencies = (
@@ -15,6 +15,7 @@ export const useServiceUserDependencies = (
     isExpiring: boolean,
 ) => {
     const [selectedProvider, setSelectedProvider] = useState<string>();
+    const [selectedService, setSelectedService] = useState<string>();
     const [selectedDates, setSelectedDates] = useState<{ joinDate?: Date; endDate?: Date }>({});
     const fetchServiceUser = isExpiring
         ? () => fetchQueryServicesUserExpiring(query)
@@ -40,17 +41,19 @@ export const useServiceUserDependencies = (
         [res?.data.serviceUsers],
     );
 
-    const filterServiceUsers = useFilteredServiceUsers({
-        selectedDates,
-        selectedProvider: selectedProvider ?? '',
-        providers: memorizeProviders,
-        serviceUserData: memorizeServiceUser ?? [],
-    });
     const memorizeServices = useMemo(() => services?.data ?? [], [services?.data]);
     const memorizeServiceAccounts = useMemo(
         () => serviceAccounts?.data ?? [],
         [serviceAccounts?.data],
     );
+    const filterServiceUsers = useFilteredServiceUsers({
+        selectedDates,
+        selectedProvider: selectedProvider ?? '',
+        selectedService: selectedService ?? '',
+        services: memorizeServices,
+        providers: memorizeProviders,
+        serviceUserData: memorizeServiceUser ?? [],
+    });
 
     const handleDataChange = (dateType: 'joinDate' | 'endDate', date: Date | undefined) => {
         setSelectedDates((prevDate) => ({
@@ -72,6 +75,8 @@ export const useServiceUserDependencies = (
         filterServiceUsers,
         selectedProvider,
         setSelectedProvider,
+        selectedService,
+        setSelectedService,
         handleDataChange,
     };
 };

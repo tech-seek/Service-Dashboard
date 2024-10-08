@@ -22,6 +22,8 @@ const ServiceUserTable: FC<Props> = ({
     joinSelectedDate,
     selectedProvider,
     setSelectedProvider,
+    selectedService,
+    setSelectedService,
     isLoading,
     isPending,
     queryPath,
@@ -43,6 +45,8 @@ const ServiceUserTable: FC<Props> = ({
         joinSelectedDate,
         selectedProvider,
         setSelectedProvider,
+        selectedService,
+        setSelectedService,
         queryClient,
     });
     return (

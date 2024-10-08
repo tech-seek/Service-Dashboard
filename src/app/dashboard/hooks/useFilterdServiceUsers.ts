@@ -1,27 +1,38 @@
 import { endOfDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
 import { useMemo } from 'react';
+import { TServiceResponse } from '@/types/service';
 import { TServiceUserResponse } from '@/types/serviceUser';
 import { TUserRespone } from '@/types/user';
 
 interface UseFilteredServiceUsersParams {
     serviceUserData: TServiceUserResponse[] | undefined;
     selectedProvider: string;
+    selectedService: string;
     selectedDates: { joinDate?: Date; endDate?: Date };
     providers: TUserRespone[];
+    services: TServiceResponse[];
 }
 
 export const useFilteredServiceUsers = ({
     serviceUserData,
     selectedProvider,
+    selectedService,
+    services,
     selectedDates,
     providers,
 }: UseFilteredServiceUsersParams) => {
     return useMemo(() => {
         return (serviceUserData ?? []).filter((serviceUser) => {
             // Dealer matching
-            const providerName = providers.find(({ userName }) => userName === selectedProvider)?.userName;
-            const providerMatch = selectedProvider ? serviceUser.providerName === providerName : true;
-
+            const providerName = providers.find(
+                ({ userName }) => userName === selectedProvider,
+            )?.userName;
+            const providerMatch = selectedProvider
+                ? serviceUser.providerName === providerName
+                : true;
+            // Service matching
+            const serviceId = services.find(({ name }) => name === selectedService)?.id;
+            const serviceMatch = selectedService ? serviceUser.serviceId === serviceId : true;
             // Date matching
             const selectedJoinDate = selectedDates?.joinDate;
             const selectedEndDate = selectedDates?.endDate;
@@ -45,10 +56,15 @@ export const useFilteredServiceUsers = ({
                     isEqual(serviceUser.endDate, endOfDay(selectedEndDate));
             }
 
-            return (
-                providerMatch && joinDateMatch && endDateMatch
-                // &&  serviceUser.serviceId === serviceId
-            );
+            return providerMatch && joinDateMatch && endDateMatch && serviceMatch;
         });
-    }, [serviceUserData, providers, selectedProvider, selectedDates]);
+    }, [
+        serviceUserData,
+        providers,
+        selectedProvider,
+        services,
+        selectedService,
+        selectedDates?.joinDate,
+        selectedDates?.endDate,
+    ]);
 };
