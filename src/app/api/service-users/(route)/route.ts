@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import { TServiceUserPayload } from '@/types/serviceUser';
 import { errorResponse } from '@/app/api/helpers';
 import { onCreateServiceUser, onFindAllServiceUsers, onFindServiceUsers } from '../controllers';
-import { updateLeftDaysServiceUsers } from '../controllers/updateLeftDaysServiceUsers';
+import { updateLeftDays } from '../controllers/updateLeftDaysServiceUsers';
 
 // Create Service User
 export const POST = async (req: NextRequest) => {
@@ -27,7 +27,7 @@ export const GET = async (req: NextRequest) => {
         const limit = parseInt(searchParam.get('limit') ?? '10', 10);
 
         if (isUpdateLeftDays) {
-            const res = await updateLeftDaysServiceUsers();
+            const res = await updateLeftDays();
             return res;
         } else if (all) {
             return await onFindAllServiceUsers();

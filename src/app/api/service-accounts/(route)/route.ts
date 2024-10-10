@@ -8,7 +8,7 @@ import {
     onFindMultiServicesServiceAcc,
     onFindServiceAccounts,
 } from '../controllers';
-import { updateLeftDaysServiceAccounts } from '../controllers/updateLeftDaysServiceAccounts';
+import { updateLeftDays } from '../controllers/updateLeftDaysServiceAccounts';
 
 // Create a new ServiceAccount
 export const POST = async (req: NextRequest) => {
@@ -32,7 +32,7 @@ export const GET = async (req: NextRequest) => {
         const limit = parseInt(searchParam.get('limit') ?? '30', 10);
         const decodedSearchQuery = decodeURIComponent(searchQuery);
         if (isUpdateLeftDays) {
-            const res = await updateLeftDaysServiceAccounts();
+            const res = await updateLeftDays();
             return res;
         } else if (all) {
             return await onFindAllServiceAccounts();
