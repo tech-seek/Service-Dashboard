@@ -1,5 +1,6 @@
 'use client';
 
+import { SERVICE_ACCOUNTS, SERVICE_USERS } from '@/statics/queryKey';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -14,7 +15,6 @@ import { API_BASE_URL } from '@/app/config/env';
 import { AddServiceBtn } from '@/app/dashboard/components/services';
 import useShowToast from '@/app/hooks/useShowToast';
 import ProfileSettings from '../sidebar/ProfileSettings';
-import { SERVICE_ACCOUNTS, SERVICE_USERS } from '@/statics/queryKey';
 
 
 const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
@@ -46,6 +46,33 @@ const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
             showToast(false, 'Failed to update left days');
         }
     }
+    async function handleUpdateLeftDaysV2() {
+        try {
+            const [serviceAccountsResponse, serviceUsersResponse] = await Promise.all([
+                fetch(`${API_BASE_URL}/service-accounts?is-update-left-days=true`),
+                fetch(`${API_BASE_URL}/service-users?is-update-left-days=true`),
+            ]);
+
+            const serviceAccountsData = await serviceAccountsResponse.json();
+            const serviceUsersData = await serviceUsersResponse.json();
+
+            // Invalidate queries for service accounts and service users
+            queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
+            queryClient.invalidateQueries({ queryKey: [SERVICE_ACCOUNTS] });
+
+            // Check both responses
+            if (serviceAccountsResponse.ok && serviceUsersResponse.ok) {
+                showToast(true, `Request successful`);
+            } else {
+                const errorMessage = serviceAccountsData.error || serviceUsersData.error;
+                showToast(false, errorMessage || 'Failed to update left days');
+            }
+        } catch (error) {
+            console.log('🚀 > file: avatarDropDown.tsx:45 > handleUpdateLeftDays > error:', error);
+            showToast(false, 'Failed to update left days');
+        }
+    }
+
     return (
         <>
             <DropdownMenu>
@@ -75,6 +102,9 @@ const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
                     )}
                     <DropdownMenuItem onClick={handleUpdateLeftDays}>
                         Update Left Days
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleUpdateLeftDaysV2}>
+                        Update Left Days V2
                     </DropdownMenuItem>
                     {isAdmin && (
                         <DropdownMenuItem asChild>
