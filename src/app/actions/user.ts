@@ -1,12 +1,11 @@
 'use server';
 
+import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
 import { cache } from 'react';
 import { TUserPayload } from '@/types/user';
 import { tryCatch } from '@/lib/trycatch';
 import { db } from '../api/helpers';
-import { auth } from '@/auth';
-
 
 export const createUserAction = async (payload: TUserPayload) => {
     const [data, error] = await tryCatch(`users`, payload, { method: 'POST' });
@@ -30,9 +29,9 @@ export const getUserByNameAction = cache(async (name: string) => {
     return user;
 });
 
-export const isAdminAction = async () =>{
-      const session = await auth();
-      const user = await getUserByNameAction(session?.user?.name ?? '');
-      const isAdmin = user?.role === 'admin';
-      return isAdmin;
-}
+export const isAdminAction = cache(async () => {
+    const session = await auth();
+    const user = await getUserByNameAction(session?.user?.name ?? '');
+    const isAdmin = user?.role === 'admin';
+    return isAdmin;
+});

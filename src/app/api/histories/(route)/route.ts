@@ -20,7 +20,7 @@ export const GET = async (req: NextRequest) => {
     try {
         const searchParam = new URLSearchParams(req.nextUrl.searchParams);
         const page = parseInt(searchParam.get('page') ?? '1', 10);
-        const limit = parseInt(searchParam.get('limit') ?? '30', 10);
+        const limit = parseInt(searchParam.get('limit') ?? '10', 10);
         const searchQuery = searchParam.get('search') ?? '';
         const decodedSearchQuery = decodeURIComponent(searchQuery);
         const res = await onFindHistories(page, limit, decodedSearchQuery.trim());
