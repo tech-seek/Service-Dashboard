@@ -33,7 +33,7 @@ export type TFilterdUser = IServiceUser['usersData'] & { joinDate?: string; endD
 type TFilterData = TServiceAccountResponse | TServiceUserResponse | THistoryResponse;
 type TColumns = ColumnDef<TFilterData>[];
 
-interface IProps {
+export interface ICustomTableProps {
     serviceId?: string;
     serviceName: string;
     filteredData: TFilterData[];
@@ -47,7 +47,7 @@ interface IProps {
     totalPage: TMultipleServiceAccTotalRecords;
 }
 
-const CustomTable: FC<IProps> = ({
+const CustomTable: FC<ICustomTableProps> = ({
     serviceId = '',
     serviceName,
     filteredData,
