@@ -6,7 +6,6 @@ import { calculateLeftDays } from '@/lib/utils';
 import { db, errorResponse, successResponse, zodErrorResponse } from '@/app/api/helpers';
 import { ServiceUserSchema } from '../validations';
 
-
 // Create a new service user
 export const onCreateServiceUser = async (payload: TServiceUserPayload) => {
     try {
@@ -112,14 +111,18 @@ export const onFindServiceUsers = async (
             where: {
                 ...whereClause,
                 OR: [
-                    { name: { contains: searchQuery,mode: 'insensitive' } },
-                    { phone: { contains: searchQuery ,mode: 'insensitive'} },
-                    { email: { contains: searchQuery ,mode: 'insensitive'} },
-                    { service: { name: { contains: searchQuery,mode: 'insensitive' } } },
+                    { name: { contains: searchQuery, mode: 'insensitive' } },
+                    { phone: { contains: searchQuery, mode: 'insensitive' } },
+                    { email: { contains: searchQuery, mode: 'insensitive' } },
+                    { service: { name: { contains: searchQuery, mode: 'insensitive' } } },
                 ],
             },
             orderBy: { leftDays: 'asc' },
-            include: {
+            select: {
+                id: true,
+                name: true,
+                phone: true,
+                email: true,                
                 service: {
                     select: {
                         id: true,
@@ -232,7 +235,7 @@ export const onFindServiceUsersExpiring = async (
     try {
         // Calculate skip based on current page and page size
         const skip = (page - 1) * limit;
-        console.log(searchQuery,'inside index');
+        console.log(searchQuery, 'inside index');
         // Fetch data with pagination
         const serviceUsers = await db.serviceUser.findMany({
             where: {
