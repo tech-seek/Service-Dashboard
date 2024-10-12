@@ -4,6 +4,7 @@ import { TServiceUserResponse } from './serviceUser';
 export type TServiceAccountPayload = {
     id?: string;
     password: string;
+    number: string;
     email: string;
     joinDate: string;
     endDate: string;
@@ -15,6 +16,7 @@ export type TServiceAccountPayload = {
 export type TServiceAccountResponse = {
     id: string;
     password: string;
+    number: string;
     email: string;
     joinDate: string;
     endDate: string;

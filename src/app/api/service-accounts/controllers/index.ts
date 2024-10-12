@@ -36,6 +36,7 @@ export const onCreateServiceAccount = async (payload: TServiceAccountPayload) =>
         });
         return successResponse(serviceAccount, 'ServiceAccount created successfully');
     } catch (error) {
+        console.log("🚀 > file: index.ts:39 > onCreateServiceAccount > error:", error)
         return errorResponse('Internal server error', 500);
     }
 };
