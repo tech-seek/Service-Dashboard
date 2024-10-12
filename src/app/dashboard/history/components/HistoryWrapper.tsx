@@ -32,6 +32,7 @@ import {
 import TableSkeleton, { TableRowSkeleton } from '@/components/ui/table-skeleton';
 import { deleteHistoryActions } from '@/app/actions/history';
 import useShowToast from '@/app/hooks/useShowToast';
+import { Icons } from '@/components/ui/icons';
 
 const HistoryWrapper = ({ searchParams }: ISerchParams) => {
     const page = parseInt(searchParams['page'] ?? '1', 10);
@@ -113,7 +114,8 @@ const HistoryWrapper = ({ searchParams }: ISerchParams) => {
                     const historyId = row.original.id;
                     return (
                         <CustomAlertDialog
-                            buttonTitle='Delete'
+                            buttonTitle={<Icons.Trash2 className='size-5'/>}
+                            className='p-1'
                             messageTitle='Are you absolutely sure?'
                             message='This action cannot be undone. This will permanently delete your account and remove your data from our servers.'
                             onClick={() => handleDelete(historyId)}
