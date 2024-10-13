@@ -39,7 +39,6 @@ const renderField = (label: string, fieldId: string, fieldComponent: React.React
 
 const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }) => {
     const nameField = useFormField(rowData?.email ?? '');
-    const numberField = useFormField(rowData?.number ?? '');
     const passwordField = useFormField(rowData?.password ?? '');
     const joinDateField = useDateField(rowData?.joinDate ?? '');
     const endDateField = useDateField(rowData?.endDate ?? '');
