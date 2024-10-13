@@ -1,8 +1,9 @@
 import { EXPIRING, ONGOING } from '@/statics';
-import { TServiceAccountPayload } from '@/types/serviceAccount';
+import { TServiceAccountPayload} from '@/types/serviceAccount';
 import { calculateLeftDays } from '@/lib/utils';
 import { db, errorResponse, successResponse, zodErrorResponse } from '@/app/api/helpers';
 import { ServiceAccountSchema } from '../validations';
+
 
 export const onCreateServiceAccount = async (payload: TServiceAccountPayload) => {
     try {
@@ -36,7 +37,6 @@ export const onCreateServiceAccount = async (payload: TServiceAccountPayload) =>
         });
         return successResponse(serviceAccount, 'ServiceAccount created successfully');
     } catch (error) {
-        console.log("🚀 > file: index.ts:39 > onCreateServiceAccount > error:", error)
         return errorResponse('Internal server error', 500);
     }
 };
@@ -100,8 +100,28 @@ export const onFindServiceAccounts = async (
                 },
             },
             orderBy: { leftDays: 'asc' },
-            include: {
-                serviceUser: true,
+            select: {
+                id: true,
+                password: true,
+                email: true,
+                number: true,
+                joinDate: true,
+                endDate: true,
+                leftDays: true,
+                status: true,
+                updatedAt: true,
+                serviceId: true,
+                serviceUser: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phone: true,
+                        email: true,
+                        endDate: true,
+                        type: true,
+                        model: true,
+                    },
+                },
                 dealer: {
                     select: {
                         id: true,
@@ -139,88 +159,99 @@ export const onFindMultiServicesServiceAcc = async (
     try {
         let whereClause = {};
 
-        switch (query) {
-            case ONGOING:
-                whereClause = { leftDays: { gte: 4 } };
-                break;
-            case EXPIRING:
-                whereClause = { leftDays: { lte: 3 } };
-                break;
-            default:
-                break;
+        // Set condition based on query input
+        if (query === ONGOING) {
+            whereClause = { leftDays: { gte: 4 } };
+        } else if (query === EXPIRING) {
+            whereClause = { leftDays: { lte: 3 } };
         }
 
-        // Fetch distinct services
+        // Fetch distinct serviceId values
         const distinctServices = await db.serviceAccount.findMany({
-            where: whereClause,
-            select: {
-                serviceId: true,
+            where: {
+                ...whereClause,
+                email: { contains: searchQuery, mode: 'insensitive' },
             },
-            distinct: ['serviceId'],
+            select: { serviceId: true },
+            distinct: ['serviceId'], // Fetch only distinct serviceIds
         });
 
+        // Paginate results for each distinct serviceId
         const formattedServiceData = await Promise.all(
-            distinctServices.map(async (service) => {
-                // Fetch paginated data for the service
+            distinctServices.map(async ({ serviceId }) => {
+                // Fetch paginated data for the current serviceId
                 const serviceAccounts = await db.serviceAccount.findMany({
                     where: {
                         ...whereClause,
-                        email: {
-                            contains: searchQuery,mode: 'insensitive' 
-                        },
-                        serviceId: service.serviceId,
+                        email: { contains: searchQuery, mode: 'insensitive' },
+                        serviceId,
                     },
-                    orderBy: { leftDays: 'asc' },
-                    include: {
-                        serviceUser: true,
+                    select: {
+                        id: true,
+                        password: true,
+                        email: true,
+                        number: true,
+                        joinDate: true,
+                        endDate: true,
+                        leftDays: true,
+                        status: true,
+                        updatedAt: true,
+                        serviceId: true,
                         dealer: {
                             select: {
                                 id: true,
                                 name: true,
                             },
                         },
+                        serviceUser: true, // Include only if necessary
                     },
-                    skip: (page - 1) * limit,
+                    orderBy: { leftDays: 'asc' },
+                    skip: (page - 1) * limit, // Paginate results per serviceId
                     take: limit,
                 });
 
-                // Count total records for this particular service
+                // Count the total number of records for the current serviceId
                 const totalRecords = await db.serviceAccount.count({
                     where: {
                         ...whereClause,
-                        serviceId: service.serviceId,
+                        serviceId,
+                        email: { contains: searchQuery, mode: 'insensitive' },
                     },
                 });
 
+                // Return paginated results for the current service
                 return {
-                    serviceId: service.serviceId,
+                    serviceId,
                     totalRecords,
                     serviceAccounts,
                 };
             }),
         );
-        // Create an object with serviceId as key and totalRecords as value
-        const totalRecordsByServiceId = formattedServiceData.reduce(
-            (acc, service) => {
-                acc[service.serviceId] = service.totalRecords;
-                return acc;
-            },
-            {} as Record<string, number>,
-        );
-        // Flatten the result if needed
+
+        // Prepare final response
+        const formattedResponse = {
+            serviceAccounts: formattedServiceData.flatMap((service) => service.serviceAccounts),
+            totalRecords: formattedServiceData.reduce(
+                (acc, { serviceId, totalRecords }) => {
+                    acc[serviceId] = totalRecords;
+                    return acc;
+                },
+                {} as Record<string, number>,
+            ),
+        };
+
         if (!formattedServiceData.length) {
             return errorResponse('No ServiceAccounts found', 404);
         }
-        const formatedResponse = {
-            serviceAccounts: formattedServiceData.flatMap((service) => service.serviceAccounts),
-            totalRecords: totalRecordsByServiceId,
-        };
-        return successResponse(formatedResponse, 'ServiceAccounts fetched successfully');
+
+        return successResponse(formattedResponse, 'ServiceAccounts fetched successfully');
     } catch (error) {
         console.error('Error fetching service accounts:', error);
         return errorResponse('Internal server error', 500);
     }
 };
+
+
 // single find service account
 export const onFindServiceAccount = async (id: string) => {
     try {
