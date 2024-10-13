@@ -38,8 +38,8 @@ const renderField = (label: string, fieldId: string, fieldComponent: React.React
 );
 
 const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }) => {
-    console.log('🚀 > file: AccountEditForm.tsx:34 > rowData:', rowData);
     const nameField = useFormField(rowData?.email ?? '');
+    const numberField = useFormField(rowData?.number ?? '');
     const passwordField = useFormField(rowData?.password ?? '');
     const joinDateField = useDateField(rowData?.joinDate ?? '');
     const endDateField = useDateField(rowData?.endDate ?? '');
@@ -59,6 +59,7 @@ const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }
         const dealerId = dealers.find(({ name }) => name === selectedDealer)?.id ?? '';
         const editedUserData: TServiceAccountPayload = {
             id: rowData?.id ?? '',
+            number: rowData?.number ?? '',
             email: nameField.value,
             password: passwordField.value,
             status,
@@ -152,9 +153,7 @@ const FormFields: FC<IProps> = ({ rowData, onDelete, onEdit, dealers, children }
             </div>
             {children}
             <div className='mt-4 md:mt-5 flex max-lg:flex-col justify-center gap-5 relative'>
-                <span className='lg:hidden'>
-                    last updated: {updatedAt}
-                </span>
+                <span className='lg:hidden'>last updated: {updatedAt}</span>
                 <span className=' max-lg:hidden absolute top-1/2 -translate-y-1/2 left-0'>
                     last updated: {updatedAt}
                 </span>

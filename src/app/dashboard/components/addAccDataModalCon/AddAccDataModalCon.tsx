@@ -73,21 +73,6 @@ const AddAccDataModalCon: FC<IProps> = ({ rowData, onSubmit, serviceId, dealers 
                 </div>
                 <div className='grid grid-cols-3 items-center gap-4'>
                     <Label
-                        htmlFor='account'
-                        className='col-span-1 font-semibold text-base md:text-lg uppercase'
-                    >
-                        Phone
-                    </Label>
-                    <Input
-                        value={formData.number}
-                        onChange={(e) => handleInputChange('number', e.target.value)}
-                        id='number'
-                        className='col-span-2 bg-[#ffffff62] text-white text-base'
-                    />
-                </div>
-
-                <div className='grid grid-cols-3 items-center gap-4'>
-                    <Label
                         htmlFor='password'
                         className='col-span-1 font-semibold text-base md:text-lg uppercase'
                     >

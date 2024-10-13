@@ -1,5 +1,6 @@
 'use client';
 
+import { SERVICE_ACCOUNTS } from '@/statics/queryKey';
 import { useQueryClient } from '@tanstack/react-query';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -14,11 +15,13 @@ import { Button } from '@/components/ui/button';
 import { CustomDialogModal } from '@/components/ui/customDialogModal';
 import { DatePicker } from '@/components/ui/datePicker';
 import { SelelectAndSearch } from '@/components/ui/selectAndSerch';
-import { createServiceAccuntAction, deleteServiceAccuntAction, updateServiceAccuntAction } from '@/app/actions/serviceAccount';
+import {
+    createServiceAccuntAction,
+    deleteServiceAccuntAction,
+    updateServiceAccuntAction,
+} from '@/app/actions/serviceAccount';
 import useShowToast from '@/app/hooks/useShowToast';
 import { AddAccDataModalCon, EditAccDataModalCon } from '..';
-import { SERVICE_ACCOUNTS } from '@/statics/queryKey';
-
 
 interface IProps {
     data: TServiceResponse;
@@ -132,7 +135,7 @@ const ServiceTableColumn = ({
 
             queryClient.setQueryData(
                 [SERVICE_ACCOUNTS],
-                [...(prevServiceAcc as TServiceAccountResponse[]), data],
+                [...((prevServiceAcc ?? []) as TServiceAccountResponse[]), data],
             );
             // If the account is deleted successfully, show a success
             // toast message and invalidate the cache.
@@ -164,11 +167,6 @@ const ServiceTableColumn = ({
                 accessorKey: 'email',
                 header: 'Name',
                 cell: ({ row }) => row.getValue('email'),
-            },
-            {
-                accessorKey: 'number',
-                header: 'Phone',
-                cell: ({ row }) => row.getValue('number') || '--  --',
             },
             {
                 accessorKey: 'password',

@@ -60,7 +60,6 @@ const RenderTable: FC<IProps> = ({
             serviceName: singleItem.name,
         })),
     );
-
     // We're going to use the first item in the array to set up our
     // column configurations. We'll use its properties to determine
     // what columns we need to display.
