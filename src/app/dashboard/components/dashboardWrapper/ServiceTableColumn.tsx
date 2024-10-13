@@ -166,6 +166,11 @@ const ServiceTableColumn = ({
                 cell: ({ row }) => row.getValue('email'),
             },
             {
+                accessorKey: 'number',
+                header: 'Phone',
+                cell: ({ row }) => row.getValue('number') || '--  --',
+            },
+            {
                 accessorKey: 'password',
                 header: 'Password',
                 cell: ({ row }) => row.getValue('password'),
