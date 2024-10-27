@@ -246,7 +246,7 @@ const ServiceTableColumn = ({
                             className={cn(
                                 'size-full rounded-full py-1 text-white',
                                 status === 'active' ? 'bg-green-500' : 'bg-red-500',
-                            )}
+                            )}//
                         >
                             {status as React.ReactNode}
                         </p>
