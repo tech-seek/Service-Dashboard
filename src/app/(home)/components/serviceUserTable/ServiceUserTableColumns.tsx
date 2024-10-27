@@ -12,6 +12,7 @@ import { TServiceResponse } from '@/types/service';
 import { TServiceAccountResponse } from '@/types/serviceAccount';
 import { TServiceUserPayload, TServiceUserResponse } from '@/types/serviceUser';
 import { TUserRespone } from '@/types/user';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { CustomAlertDialog } from '@/components/ui/customAlertDialog';
 import { CustomDialogModal } from '@/components/ui/customDialogModal';
@@ -237,7 +238,20 @@ const ServiceUserTableColumns = ({
                         Status <GoArrowSwitch className='rotate-90 text-xl ml-1.5' />
                     </Button>
                 ),
-                cell: ({ row }) => row.getValue('status'),
+                cell: ({ row }) => {
+                    const status = row.getValue('status');
+                    console.log("🚀 > file: ServiceUserTableColumns.tsx:243 > status:", status)
+                    return (
+                        <p
+                            className={cn(
+                                'size-full rounded-full py-1 text-white',
+                                String(status).toLowerCase() === 'paid' ? 'bg-green-500' : 'bg-yellow-500',
+                            )}
+                        >
+                            {status as React.ReactNode}
+                        </p>
+                    );
+                },
             },
             {
                 accessorKey: 'provider',
@@ -307,7 +321,20 @@ const ServiceUserTableColumns = ({
                 },
             },
         ],
-        [services, selectedService, handleServiceChange, joinSelectedDate, onDateChange, endSelectedDate, providers, selectedProvider, handleProviderChange, serviceAccounts, handleEditUser, handleDelete],
+        [
+            services,
+            selectedService,
+            handleServiceChange,
+            joinSelectedDate,
+            onDateChange,
+            endSelectedDate,
+            providers,
+            selectedProvider,
+            handleProviderChange,
+            serviceAccounts,
+            handleEditUser,
+            handleDelete,
+        ],
     );
 
     return columns;

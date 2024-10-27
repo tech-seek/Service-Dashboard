@@ -11,6 +11,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { TDealerResponse } from '@/types/dealer';
 import { TServiceResponse } from '@/types/service';
 import { TServiceAccountPayload, TServiceAccountResponse } from '@/types/serviceAccount';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { CustomDialogModal } from '@/components/ui/customDialogModal';
 import { DatePicker } from '@/components/ui/datePicker';
@@ -238,7 +239,19 @@ const ServiceTableColumn = ({
                         status <GoArrowSwitch className='rotate-90 text-xl ml-1.5' />
                     </Button>
                 ),
-                cell: ({ row }) => row.getValue('status'),
+                cell: ({ row }) => {
+                    const status = row.getValue('status');
+                    return (
+                        <p
+                            className={cn(
+                                'size-full rounded-full py-1 text-white',
+                                status === 'active' ? 'bg-green-500' : 'bg-red-500',
+                            )}
+                        >
+                            {status as React.ReactNode}
+                        </p>
+                    );
+                },
             },
             {
                 accessorKey: 'serviceUser',
