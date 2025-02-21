@@ -1,10 +1,10 @@
 'use client';
 
 import { fetchDealerData, fetchQueryServicesAccQueryData, fetchServicesData } from '@/http';
+import { DEALERS, SERVICE_ACCOUNTS, SERVICES } from '@/statics/queryKey';
 import { useCallback, useMemo, useState } from 'react';
 import { useFetchData } from '@/lib/useFetchData';
 import { useFilteredServiceAccounts } from './useFilteredServiceAccounts';
-import { DEALERS, SERVICE_ACCOUNTS, SERVICES } from '@/statics/queryKey';
 
 export const useServiceTableDependencies = (
     query: string,
@@ -29,7 +29,6 @@ export const useServiceTableDependencies = (
 
     // Fetch services data
     const { data: services } = useFetchData([SERVICES], fetchServicesData);
-
     // Fetch dealers data
     const { data: dealers } = useFetchData([DEALERS], fetchDealerData);
 
@@ -85,10 +84,10 @@ export const useServiceTableDependencies = (
     );
 
     // Memoize the dealers data so that we don't re-fetch it on every render
-    const memoraizeDealers = useMemo(() => dealers?.data ?? [], [dealers?.data]);
+    const memorizedDealers = useMemo(() => dealers?.data ?? [], [dealers?.data]);
 
     // Memoize the service accounts data so that we don't re-fetch it on every render
-    const memoraizeAccounts = useMemo(
+    const memorizedAccounts = useMemo(
         // Return the service accounts data or an empty array if it's not available
         () => res?.data.serviceAccounts ?? [],
         // The dependency array is the service accounts data
@@ -98,13 +97,13 @@ export const useServiceTableDependencies = (
     const filterServiceAccounts = useFilteredServiceAccounts({
         selectedDates,
         selectedDealer,
-        dealers: memoraizeDealers,
-        serviceAccountsData: memoraizeAccounts,
+        dealers: memorizedDealers,
+        serviceAccountsData: memorizedAccounts,
     });
 
     return {
         services: services?.data ?? [],
-        dealers: memoraizeDealers,
+        dealers: memorizedDealers,
         totalPage: res?.data.totalRecords,
         selectedDealer,
         selectedDates,
