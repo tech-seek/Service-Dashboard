@@ -175,7 +175,6 @@ export const onFindMultiServicesServiceAcc = async (
             select: { serviceId: true },
             distinct: ['serviceId'], // Fetch only distinct serviceIds
         });
-
         // Paginate results for each distinct serviceId
         const formattedServiceData = await Promise.all(
             distinctServices.map(async ({ serviceId }) => {
