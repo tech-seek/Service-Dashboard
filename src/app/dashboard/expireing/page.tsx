@@ -1,13 +1,14 @@
+import { ISearchParams } from '@/types';
 import { Metadata } from 'next';
 import React from 'react';
 import { ServiceAccountsExpireTable } from './components';
-import { ISerchParams } from '@/types';
+
 
 export const metadata: Metadata = {
-    title: 'Service Accounts Expireing',
+    title: 'Service Accounts Expiring',
 };
-const ExpireingPage = ({ searchParams }: ISerchParams) => {
+const ExpiringPage = ({ searchParams }: ISearchParams) => {
     return <ServiceAccountsExpireTable searchParams={searchParams} />;
 };
 
-export default ExpireingPage;
+export default ExpiringPage;

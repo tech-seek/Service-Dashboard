@@ -2,17 +2,16 @@
 
 import { useSearchQuery } from '@/provider/use-search-provider';
 import { ONGOING } from '@/statics';
-import { ISerchParams } from '@/types';
+import { ISearchParams } from '@/types';
 import { useCallback } from 'react';
 import TableSkeleton from '@/components/ui/table-skeleton';
 import { IServiceUser } from '@/app/types/service';
 import { useServiceTableDependencies } from '../../hooks';
 import RenderTable from './RenderTable';
 
-
 export type UsersData = IServiceUser['usersData'] & { joinDate?: string; endDate?: string };
 
-const DashboardWrapper = ({ searchParams }: ISerchParams) => {
+const DashboardWrapper = ({ searchParams }: ISearchParams) => {
     const page = parseInt(searchParams['page'] ?? '1', 10);
     const limit = parseInt(searchParams['limit'] ?? '10', 10);
     const { searchQuery } = useSearchQuery();

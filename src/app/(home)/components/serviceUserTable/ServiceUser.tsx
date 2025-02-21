@@ -1,7 +1,8 @@
 'use client';
 
 import { useSearchQuery } from '@/provider/use-search-provider';
-import { ISerchParams } from '@/types';
+import { SERVICE_USERS } from '@/statics/queryKey';
+import { ISearchParams } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { TServiceUserPayload } from '@/types/serviceUser';
@@ -10,11 +11,9 @@ import { useServiceUserDependencies } from '@/app/dashboard/hooks';
 import useShowToast from '@/app/hooks/useShowToast';
 import { ButtonContainer } from '../buttonContainer';
 import ServiceUserTable from './ServiceUserTable';
-import { SERVICE_USERS } from '@/statics/queryKey';
-
 
 export type THandleAddServiceUser = (payload: TServiceUserPayload) => void;
-interface IProps extends ISerchParams {
+interface IProps extends ISearchParams {
     serviceName: string;
     isExpiring: boolean;
     isHideButtonContainer?: boolean;
@@ -48,7 +47,7 @@ const ServiceUser = ({
         queryClient.invalidateQueries({ queryKey: [SERVICE_USERS] });
         setIsOpen(false);
     };
-    
+
     const {
         endSelectedDate,
         filterServiceUsers,

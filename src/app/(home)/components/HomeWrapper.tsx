@@ -1,8 +1,8 @@
-import { ISerchParams } from '@/types';
+import { ISearchParams } from '@/types';
 import React from 'react';
 import { ServiceUser } from './serviceUserTable';
 
-const HomeWrapper = ({ searchParams }: ISerchParams) => {
+const HomeWrapper = ({ searchParams }: ISearchParams) => {
     return (
         <section>
             <ServiceUser

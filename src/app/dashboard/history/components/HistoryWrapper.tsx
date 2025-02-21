@@ -3,7 +3,7 @@
 import { getHistories } from '@/http/histories'; // Assume you have a deleteHistory function in your API
 import { useSearchQuery } from '@/provider/use-search-provider';
 import { HISTORY } from '@/statics/queryKey';
-import { ISerchParams } from '@/types';
+import { ISearchParams } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import {
     ColumnDef,
@@ -20,6 +20,7 @@ import { useFetchData } from '@/lib/useFetchData';
 import { cn } from '@/lib/utils';
 import { CustomAlertDialog } from '@/components/ui/customAlertDialog';
 import { CustomRow } from '@/components/ui/customRow';
+import { Icons } from '@/components/ui/icons';
 import PaginationButtons from '@/components/ui/pagination-buttons';
 import {
     Table,
@@ -32,9 +33,8 @@ import {
 import TableSkeleton, { TableRowSkeleton } from '@/components/ui/table-skeleton';
 import { deleteHistoryActions } from '@/app/actions/history';
 import useShowToast from '@/app/hooks/useShowToast';
-import { Icons } from '@/components/ui/icons';
 
-const HistoryWrapper = ({ searchParams }: ISerchParams) => {
+const HistoryWrapper = ({ searchParams }: ISearchParams) => {
     const page = parseInt(searchParams['page'] ?? '1', 10);
     const limit = parseInt(searchParams['limit'] ?? '10', 10);
     const { searchQuery } = useSearchQuery();
@@ -114,7 +114,7 @@ const HistoryWrapper = ({ searchParams }: ISerchParams) => {
                     const historyId = row.original.id;
                     return (
                         <CustomAlertDialog
-                            buttonTitle={<Icons.Trash2 className='size-5'/>}
+                            buttonTitle={<Icons.Trash2 className='size-5' />}
                             className='p-1'
                             messageTitle='Are you absolutely sure?'
                             message='This action cannot be undone. This will permanently delete your account and remove your data from our servers.'

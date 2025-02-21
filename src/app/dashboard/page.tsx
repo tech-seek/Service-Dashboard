@@ -1,8 +1,7 @@
-import { ISerchParams } from '@/types';
+import { ISearchParams } from '@/types';
 import { DashboardWrapper } from '@/app/dashboard/components/dashboardWrapper';
 
-
-const HomePage = ({ searchParams }: ISerchParams) => {
+const HomePage = ({ searchParams }: ISearchParams) => {
     return <DashboardWrapper searchParams={searchParams} />;
 };
 export default HomePage;

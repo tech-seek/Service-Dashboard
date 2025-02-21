@@ -1,12 +1,11 @@
-import { ISerchParams } from '@/types';
+import { ISearchParams } from '@/types';
 import React from 'react';
 import { Sidebar } from '@/components/ui/sidebar';
-import HomeWrapper from './components/HomeWrapper';
 import { isAdminAction } from '../actions/user';
+import HomeWrapper from './components/HomeWrapper';
 
-
-const HomePage = async ({ searchParams }: ISerchParams) => {
-     const isAdmin = await isAdminAction();
+const HomePage = async ({ searchParams }: ISearchParams) => {
+    const isAdmin = await isAdminAction();
     return (
         <Sidebar isAdmin={isAdmin}>
             <HomeWrapper searchParams={searchParams} />

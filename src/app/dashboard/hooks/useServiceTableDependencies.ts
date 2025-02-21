@@ -1,7 +1,7 @@
 'use client';
 
-import { fetchDealerData, fetchQueryServicesAccQueryData, fetchServicesData } from '@/http';
-import { DEALERS, SERVICE_ACCOUNTS, SERVICES } from '@/statics/queryKey';
+import { fetchDealerData, fetchQueryServicesAccQueryData } from '@/http';
+import { DEALERS, SERVICE_ACCOUNTS } from '@/statics/queryKey';
 import { useCallback, useMemo, useState } from 'react';
 import { useFetchData } from '@/lib/useFetchData';
 import { useFilteredServiceAccounts } from './useFilteredServiceAccounts';
@@ -26,9 +26,10 @@ export const useServiceTableDependencies = (
         // Initialize it as an empty object
         {},
     );
-
+    //NOTE: is something unexpected happen for services then use te services query form here by uncommenting the below code
     // Fetch services data
-    const { data: services } = useFetchData([SERVICES], fetchServicesData);
+    // const { data: services } = useFetchData([SERVICES], fetchServicesData);
+
     // Fetch dealers data
     const { data: dealers } = useFetchData([DEALERS], fetchDealerData);
 
@@ -44,6 +45,10 @@ export const useServiceTableDependencies = (
         [SERVICE_ACCOUNTS, page.toString(), limit.toString(), searchQuery, String(expiring)],
         fetchQueryServicesAcc,
     );
+
+    // extract all services
+    const services = useMemo(() => res?.data.services ?? [], [res?.data.services]);
+
     // Handle date change
     const handleDateChange = useCallback(
         // The callback function takes a service id, a date type (joinDate or endDate) and a date
@@ -102,9 +107,9 @@ export const useServiceTableDependencies = (
     });
 
     return {
-        services: services?.data ?? [],
         dealers: memorizedDealers,
         totalPage: res?.data.totalRecords,
+        services,
         selectedDealer,
         selectedDates,
         isLoading,

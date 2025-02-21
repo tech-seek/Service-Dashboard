@@ -2,14 +2,13 @@
 
 import { useSearchQuery } from '@/provider/use-search-provider';
 import { EXPIRING } from '@/statics';
-import { ISerchParams } from '@/types';
+import { ISearchParams } from '@/types';
 import React from 'react';
 import TableSkeleton from '@/components/ui/table-skeleton';
 import RenderTable from '@/app/dashboard/components/dashboardWrapper/RenderTable';
 import { useServiceTableDependencies } from '@/app/dashboard/hooks';
 
-
-const ServiceAccountsExpireTable = ({ searchParams }: ISerchParams) => {
+const ServiceAccountsExpireTable = ({ searchParams }: ISearchParams) => {
     const page = parseInt(searchParams['page'] ?? '1', 10);
     const limit = parseInt(searchParams['limit'] ?? '10', 10);
     const { searchQuery } = useSearchQuery();
@@ -54,7 +53,7 @@ const ServiceAccountsExpireTable = ({ searchParams }: ISerchParams) => {
                     handleDealerChange={handleDealerChange}
                     handleDateChange={handleDateChange}
                     dealers={dealers}
-                    queryPath={EXPIRING}        
+                    queryPath={EXPIRING}
                     totalPage={totalPage ?? {}}
                 />
             </div>
