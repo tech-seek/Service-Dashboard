@@ -68,6 +68,8 @@ model ServiceAccount {
   updatedAt DateTime? @updatedAt
 
   @@index([id, email, endDate, serviceId, leftDays, dealerId])
+  @@index([serviceId, email]) // Add this composite index for email search
+  @@index([serviceId, leftDays]) // Add this composite index for leftDays search
   @@map("service_accounts")
 }
 
