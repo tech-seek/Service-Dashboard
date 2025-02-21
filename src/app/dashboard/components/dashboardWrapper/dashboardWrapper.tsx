@@ -3,7 +3,7 @@
 import { useSearchQuery } from '@/provider/use-search-provider';
 import { ONGOING } from '@/statics';
 import { ISearchParams } from '@/types';
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import TableSkeleton from '@/components/ui/table-skeleton';
 import { IServiceUser } from '@/app/types/service';
 import { useServiceTableDependencies } from '../../hooks';
@@ -32,7 +32,7 @@ const DashboardWrapper = ({ searchParams }: ISearchParams) => {
         limit,
         searchQuery,
     );
-    const renderServices = useCallback(() => {
+    const renderServices = useMemo(() => {
         if (!services || services.length === 0) {
             return (
                 <div className='grid place-items-center h-dvh mt-4 md:mt-8 gap-10'>
@@ -76,7 +76,7 @@ const DashboardWrapper = ({ searchParams }: ISearchParams) => {
 
     return (
         <section className='mb-10'>
-            <div className='container'>{renderServices()}</div>
+            <div className='container'>{renderServices}</div>
         </section>
     );
 };

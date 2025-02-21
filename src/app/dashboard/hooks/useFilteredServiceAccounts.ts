@@ -35,8 +35,9 @@ export const useFilteredServiceAccounts = ({
             return (serviceAccountsData ?? []).filter((account) => {
                 // Dealer matching
                 const dealerId = dealers.find(({ name }) => name === selectedDealer[serviceId])?.id;
+                // If there is a selected dealer, the dealer ID must match the selected dealer ID
                 const dealerMatch = selectedDealer[serviceId]
-                    ? account.dealerId === dealerId
+                    ? account?.dealer?.id === dealerId
                     : true;
 
                 // Date matching
