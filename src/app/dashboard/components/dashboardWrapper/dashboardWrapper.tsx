@@ -75,8 +75,8 @@ const DashboardWrapper = ({ searchParams }: ISearchParams) => {
     ]);
 
     return (
-        <section className='mb-10'>
-            <div className='container'>{renderServices}</div>
+        <section className='mb-10 '>
+            <div className='max-md:px-3 md:container'>{renderServices}</div>
         </section>
     );
 };

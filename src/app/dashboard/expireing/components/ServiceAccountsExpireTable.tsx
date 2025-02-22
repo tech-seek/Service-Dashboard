@@ -34,15 +34,17 @@ const ServiceAccountsExpireTable = ({ searchParams }: ISearchParams) => {
 
     if (!services || services.length === 0) {
         return (
-            <div className='grid place-items-center mt-4 md:mt-8 gap-10'>
-                <TableSkeleton TbodyClasses='h-[58dvh]' />
+            <div className='max-md:px-3 md:container'>
+                <div className='grid place-items-center mt-4 md:mt-8 gap-10'>
+                    <TableSkeleton TbodyClasses='h-[58dvh]' />
+                </div>
             </div>
         );
     }
 
     return (
         <section className='mb-10'>
-            <div className='container'>
+            <div className='max-md:px-3 md:container'>
                 <RenderTable
                     item={services}
                     filterServiceAccounts={filterServiceAccounts}

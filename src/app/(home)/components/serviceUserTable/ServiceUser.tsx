@@ -72,7 +72,7 @@ const ServiceUser = ({
     );
     return (
         <section className='mb-10'>
-            <div className='container'>
+            <div className='max-md:px-3 md:container'>
                 {!isHideButtonContainer && (
                     <ButtonContainer
                         isOpen={isOpen}
