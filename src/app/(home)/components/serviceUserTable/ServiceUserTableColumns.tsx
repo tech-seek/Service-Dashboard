@@ -240,7 +240,6 @@ const ServiceUserTableColumns = ({
                 ),
                 cell: ({ row }) => {
                     const status = row.getValue('status');
-                    console.log("🚀 > file: ServiceUserTableColumns.tsx:243 > status:", status)
                     return (
                         <p
                             className={cn(
