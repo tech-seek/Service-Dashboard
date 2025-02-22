@@ -42,7 +42,6 @@ const AvatarDropDown = ({ isAdmin }: { isAdmin?: boolean }) => {
                 showToast(false, data.error);
             }
         } catch (error) {
-            console.log("🚀 > file: avatarDropDown.tsx:45 > handleUpdateLeftDays > error:", error)
             showToast(false, 'Failed to update left days');
         }
     }

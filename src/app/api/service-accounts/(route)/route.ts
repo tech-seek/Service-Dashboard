@@ -1,4 +1,4 @@
-import { ONGOING } from '@/statics';
+import { EXPIRING, ONGOING } from '@/statics';
 import { NextRequest } from 'next/server';
 import { TServiceAccountPayload } from '@/types/serviceAccount';
 import { errorResponse } from '@/app/api/helpers';
@@ -7,8 +7,9 @@ import {
     onFindAllServiceAccounts,
     onFindServiceAccounts,
 } from '../controllers';
-import { updateLeftDays } from '../controllers/updateLeftDaysServiceAccounts';
+import { onFindExpiringServiceAccounts } from '../controllers/onFindExpiringServiceAccounts';
 import { onFindMultiServicesServiceAcc } from '../controllers/onFindMultiServicesServiceAcc';
+import { updateLeftDays } from '../controllers/updateLeftDaysServiceAccounts';
 
 // Create a new ServiceAccount
 export const POST = async (req: NextRequest) => {
@@ -43,6 +44,8 @@ export const GET = async (req: NextRequest) => {
                 limit,
                 decodedSearchQuery.trim(),
             );
+        } else if (query === EXPIRING) {
+            return await onFindExpiringServiceAccounts(page, limit, decodedSearchQuery.trim());
         } else {
             return await onFindServiceAccounts(query, page, limit, decodedSearchQuery.trim());
         }

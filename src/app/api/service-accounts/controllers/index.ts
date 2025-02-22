@@ -1,9 +1,8 @@
 import { EXPIRING, ONGOING } from '@/statics';
-import { TServiceAccountPayload} from '@/types/serviceAccount';
+import { TServiceAccountPayload } from '@/types/serviceAccount';
 import { calculateLeftDays } from '@/lib/utils';
 import { db, errorResponse, successResponse, zodErrorResponse } from '@/app/api/helpers';
 import { ServiceAccountSchema } from '../validations';
-
 
 export const onCreateServiceAccount = async (payload: TServiceAccountPayload) => {
     try {
@@ -128,6 +127,12 @@ export const onFindServiceAccounts = async (
                         name: true,
                     },
                 },
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
             },
             skip,
             take: limit,
@@ -135,13 +140,14 @@ export const onFindServiceAccounts = async (
 
         // Count total records for pagination info
         const totalRecords = await db.serviceAccount.count({ where: whereClause });
-
+        // extract all services
+        const services = serviceAccounts.map((service) => service.service);
         if (!serviceAccounts.length) {
             return errorResponse('No ServiceAccounts found', 404);
         }
 
         return successResponse(
-            { serviceAccounts, totalRecords },
+            { services, serviceAccounts, totalRecords },
             'ServiceAccounts fetched successfully',
         );
     } catch (error) {
@@ -249,7 +255,6 @@ export const onFindMultiServicesServiceAcc = async (
         return errorResponse('Internal server error', 500);
     }
 };
-
 
 // single find service account
 export const onFindServiceAccount = async (id: string) => {

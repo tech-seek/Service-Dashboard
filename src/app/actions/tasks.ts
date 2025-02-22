@@ -5,7 +5,6 @@ import { TTaskPayload } from '@/types/task';
 import { tryCatch } from '@/lib/trycatch';
 
 export const createTasksAction = async (payload: TTaskPayload) => {
-    console.log('🚀 > file: tasks.ts:9 > createTasksAction > payload:', payload);
     const [data, error] = await tryCatch('tasks', payload, { method: 'POST' });
     revalidatePath('/');
     return { data, error: error?.message };
