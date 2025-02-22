@@ -9,9 +9,14 @@ interface TableSkeletonProps {
 }
 const TableSkeleton = ({ TbodyClasses, ThClasses }: TableSkeletonProps) => {
     return (
-        <div className='container'>
+        <div className='w-full'>
             <Skeleton className='w-32  h-10 mx-auto mb-5 bg:zine-200 dark:bg-muted' />
-            <Skeleton className={cn('w-full  h-10 rounded-b-none border-b border bg-primary/50', ThClasses)} />
+            <Skeleton
+                className={cn(
+                    'w-full  h-10 rounded-b-none border-b border bg-primary/50',
+                    ThClasses,
+                )}
+            />
             <Skeleton className={cn('w-full  h-44 rounded-t-none', TbodyClasses)} />
         </div>
     );
@@ -19,7 +24,13 @@ const TableSkeleton = ({ TbodyClasses, ThClasses }: TableSkeletonProps) => {
 
 export default TableSkeleton;
 
-export const TableRowSkeleton = ({ length, TrClasses }: { length?: number, TrClasses?: string }) => {
+export const TableRowSkeleton = ({
+    length,
+    TrClasses,
+}: {
+    length?: number;
+    TrClasses?: string;
+}) => {
     return (
         <TableRow>
             <TableCell colSpan={length}>
