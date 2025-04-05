@@ -13,8 +13,6 @@ export default auth((req) => {
     const isApiRoutes = nextUrl.pathname.startsWith(routes.api);
     const prevUrl = cookies.get('prevUrl')?.value ?? routes.base;
 
-   
-
     if (!isLoggedIn && isProtectedRoutes) {
         return NextResponse.redirect(new URL('/login', nextUrl));
     }
@@ -23,7 +21,11 @@ export default auth((req) => {
     }
     const response = NextResponse.next();
     if (!isAuthRoutes && !isApiRoutes) {
-        response.cookies.set('prevUrl', nextUrl.pathname, { path: '/' });
+        // Set a very long expiration for the prevUrl cookie
+        response.cookies.set('prevUrl', nextUrl.pathname, { 
+            path: '/',
+            maxAge: 365 * 24 * 60 * 60 * 10 // 10 years (effectively unlimited)
+        });
     }
 
     return response;
