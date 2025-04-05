@@ -5,10 +5,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     trustHost: true,
     session: {
         strategy: 'jwt',
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+        maxAge: 365 * 24 * 60 * 60 * 10, // 10 years (effectively unlimited)
     },
     jwt: {
-        maxAge: 30 * 24 * 60 * 60, // 30 days   
+        maxAge: 365 * 24 * 60 * 60 * 10, // 10 years (effectively unlimited)
     },
     ...authConfig,
 });

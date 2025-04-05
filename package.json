@@ -10,7 +10,7 @@
         "postinstall": "prisma generate",
         "db:migrate": "prisma migrate dev --name",
         "db:studio": "prisma studio",
-	"start:pm2": "next build && pm2 start ecosystem.config.js && pm2 save"
+        "start:pm2": "pm2 delete service-dashboard || true && next build && pm2 start ecosystem.config.js --env production && pm2 save"
     },
     "dependencies": {
         "@hookform/resolvers": "^3.9.0",
